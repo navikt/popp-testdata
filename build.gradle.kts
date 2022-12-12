@@ -39,6 +39,7 @@ dependencies {
     // OIDC
     implementation("no.nav.security:token-validation-spring:$navTokenSupportVersion")
     implementation("no.nav.security:token-client-spring:$navTokenSupportVersion")
+    implementation("org.hibernate:hibernate-validator:$hibernateValidatorVersion")
 
     // Test - setup
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
