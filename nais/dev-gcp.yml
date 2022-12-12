@@ -9,12 +9,6 @@ spec:
   azure:
     application:
       enabled: true
-  accessPolicy:
-    inbound:
-      rules:
-        - application: popp-testdata-proxy
-          namespace: pensjonopptjening
-          cluster: dev-fss
   kafka:
     pool: nav-dev
   env:
