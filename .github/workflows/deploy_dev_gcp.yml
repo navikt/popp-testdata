@@ -28,6 +28,7 @@ jobs:
         uses: actions/setup-java@v1.4.3
         with:
           java-version: 17
+          cache: 'gradle'
 
       # BYGGER DOCKER CONTAINER
       - name: 'Bygg og publiser docker image'
