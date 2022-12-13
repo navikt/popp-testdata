@@ -6,8 +6,8 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @EnableJwtTokenValidation
-class PgiEndringApplication
+class PoppTestdataApp
 
 fun main(args: Array<String>) {
-    runApplication<PgiEndringApplication>(*args)
+    runApplication<PoppTestdataApp>(*args)
 }

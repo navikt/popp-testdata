@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-@SpringBootTest(classes = [PgiEndringApplication::class])
+@SpringBootTest(classes = [PoppTestdataApp::class])
 @AutoConfigureMockMvc
 @DirtiesContext
 @EnableMockOAuth2Server
