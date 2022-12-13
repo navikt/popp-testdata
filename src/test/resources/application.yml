@@ -1,2 +1,7 @@
 POPP_Q1_URL: "http://localhost:8080/q1"
 POPP_Q2_URL: "http://localhost:8080/q2"
+
+no.nav.security.jwt:
+  issuer.aad:
+    discoveryurl: http://localhost:${mock-oauth2-server.port}/aad/.well-known/openid-configuration
+    accepted_audience: testaud
