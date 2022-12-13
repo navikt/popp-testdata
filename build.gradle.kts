@@ -8,10 +8,11 @@ val logbackEncoderVersion = "7.2"
 val navTokenSupportVersion = "3.0.0"
 val hibernateValidatorVersion = "7.0.4.Final"
 val mockWebserverVersion = "4.9.3"
+val wiremockVersion = "2.35.0"
 
 plugins {
     id("org.springframework.boot") version "3.0.0"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    //id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
 }
@@ -44,6 +45,7 @@ dependencies {
 
     // Test - setup
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
+    testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
 
     // Test - token-validation-spring-test dependencies
     testImplementation("no.nav.security:token-validation-spring-test:$navTokenSupportVersion")
