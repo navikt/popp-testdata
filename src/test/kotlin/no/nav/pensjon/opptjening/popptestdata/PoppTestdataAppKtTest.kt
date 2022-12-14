@@ -1,7 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.nimbusds.jose.JOSEObjectType
 import no.nav.pensjon.opptjening.popptestdata.api.Environment
@@ -17,18 +16,15 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.contract.wiremock.WireMockSpring
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ActiveProfiles
+
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 
-@SpringBootTest(classes = [PoppTestdataApp::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = [PoppTestdataApp::class])
 @AutoConfigureMockMvc
-@DirtiesContext
 @EnableMockOAuth2Server
-@ActiveProfiles(profiles = ["local"])
 internal class PoppTestdataAppKtTest {
 
     @Autowired
@@ -38,77 +34,66 @@ internal class PoppTestdataAppKtTest {
     private lateinit var server: MockOAuth2Server
 
     @BeforeEach
-    fun resetAll() {
+    fun resetWiremock() {
         wiremock.resetAll()
     }
 
-
     @Test
-    fun `Given an unauthrorized audience when calling post inntekt then return 401`() {
-        stubWiremock200(poppInntektQ1Url)
-
+    fun `Given an unauthorized audience when calling post inntekt then return 401`() {
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(createLagreInntektRequest())
-                .header(HttpHeaders.AUTHORIZATION, token("banan"))
+                .content(inntektRequest(environment = Q1))
+                .header(HttpHeaders.AUTHORIZATION, createToken(audience = "unauthorizedAudience"))
         )
-            .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+            .andExpect(status().isUnauthorized)
     }
 
     @Test
     fun `Given a valid lagreInntekt request when calling post inntekt then return 200 ok`() {
-        stubWiremock200(poppInntektQ1Url)
+        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q1_URL)).willReturn(aResponse().withStatus(200)))
 
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(createLagreInntektRequest())
-                .header(HttpHeaders.AUTHORIZATION, token(acceptedAudience))
+                .content(inntektRequest(environment = Q1))
+                .header(HttpHeaders.AUTHORIZATION, createToken())
         )
-            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(status().isOk)
     }
 
     @Test
     fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1`() {
-        stubWiremock200(poppInntektQ1Url)
+        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q1_URL)).willReturn(aResponse().withStatus(200)))
 
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(createLagreInntektRequest(environment = "Q1"))
-                .header(HttpHeaders.AUTHORIZATION, token(acceptedAudience))
+                .content(inntektRequest(environment = Q1))
+                .header(HttpHeaders.AUTHORIZATION, createToken())
         )
-            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(status().isOk)
 
-        wiremock.verify(1, postRequestedFor(urlEqualTo(poppInntektQ1Url)))
+        wiremock.verify(1, postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL)))
     }
 
     @Test
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2`() {
-        stubWiremock200(poppInntektQ2Url)
+        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q2_URL)).willReturn(aResponse().withStatus(200)))
 
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(createLagreInntektRequest(environment = "Q2"))
-                .header(HttpHeaders.AUTHORIZATION, token(acceptedAudience))
+                .content(inntektRequest(environment = Q2))
+                .header(HttpHeaders.AUTHORIZATION, createToken())
         )
-            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(status().isOk)
 
-        wiremock.verify(1, postRequestedFor(urlEqualTo(poppInntektQ2Url)))
+        wiremock.verify(1, postRequestedFor(urlEqualTo(POPP_INNTEKT_Q2_URL)))
     }
 
-    private fun stubWiremock200(url: String){
-        wiremock.stubFor(
-            WireMock.post(urlEqualTo(url))
-                .willReturn(aResponse().withStatus(200))
-        )
-    }
-
-
-    private fun createLagreInntektRequest(
-        environment: String? = Environment.Q1.name,
+    private fun inntektRequest(
+        environment: String? = Q1,
         fnr: String? = "01234567890",
         fomAar: Int? = 2000,
         tomAar: Int? = 2001,
@@ -127,7 +112,7 @@ internal class PoppTestdataAppKtTest {
         """
     }
 
-    private fun token(audience: String): String {
+    private fun createToken(audience: String = ACCEPTED_AUDIENCE): String {
         return "Bearer ${
             server.issueToken(
                 issuerId = "aad",
@@ -145,9 +130,11 @@ internal class PoppTestdataAppKtTest {
     }
 
     companion object {
-        private const val acceptedAudience = "testaud"
-        private const val poppInntektQ1Url = "/q1/inntekt"
-        private const val poppInntektQ2Url = "/q2/inntekt"
+        private const val ACCEPTED_AUDIENCE = "testaud"
+        private const val POPP_INNTEKT_Q1_URL = "/q1/inntekt"
+        private const val POPP_INNTEKT_Q2_URL = "/q2/inntekt"
+        private val Q1 = Environment.Q1.name
+        private val Q2 = Environment.Q2.name
 
         private val wiremock = WireMockServer(WireMockSpring.options().port(9991)).also { it.start() }
 
