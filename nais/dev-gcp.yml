@@ -14,9 +14,9 @@ spec:
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-gcp
-    - name: POPP_Q1_URL
+    - name: popp.url.q1
       value: https://pensjon-popp-q1.nais.preprod.local/popp/api
-    - name: POPP_Q2_URL
+    - name: popp.url.q2
       value: https://pensjon-popp-q2.nais.preprod.local/popp/api
   image: {{ image }}
   ingresses:

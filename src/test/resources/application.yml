@@ -1,6 +1,6 @@
-POPP_Q1_URL: "http://localhost:8080/q1"
-POPP_Q2_URL: "http://localhost:8080/q2"
-
+popp.url:
+  q1: "http://localhost:9991/q1"
+  q2: "http://localhost:9991/q2"
 
 
 no.nav.security.jwt:

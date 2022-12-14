@@ -6,19 +6,19 @@ import org.junit.jupiter.api.Test
 internal class PoppRoutingTest {
 
     companion object {
-        private const val POPP_URL_Q1 = "UrlQ1"
-        private const val POPP_URL_Q2 = "UrlQ2"
+        private const val poppUrlQ1 = "UrlQ1"
+        private const val poppUrlQ2 = "UrlQ2"
     }
 
-    private val poppRouting = PoppRouting(POPP_URL_Q1, POPP_URL_Q2)
+    private val poppRouting = PoppRouting(poppUrlQ1, poppUrlQ2)
 
     @Test
     fun `Given Q1 as input When get url Then return Q1 url`() {
-        assertEquals(POPP_URL_Q1, poppRouting.getUrl(Environment.Q1))
+        assertEquals(poppUrlQ1, poppRouting.getUrl(Environment.Q1))
     }
 
     @Test
     fun `Given Q2 as input When get url Then return Q1 url`() {
-        assertEquals(POPP_URL_Q2, poppRouting.getUrl(Environment.Q2))
+        assertEquals(poppUrlQ2, poppRouting.getUrl(Environment.Q2))
     }
 }

@@ -43,12 +43,13 @@ dependencies {
 
     // Test - setup
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-   // testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner:3.0.0")
+    //testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
 
     // Test - token-validation-spring-test dependencies
     testImplementation("no.nav.security:token-validation-spring-test:$navTokenSupportVersion")
-    testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebserverVersion")
-    testImplementation("com.squareup.okhttp3:okhttp:$mockWebserverVersion")
+    //testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebserverVersion")
+    //testImplementation("com.squareup.okhttp3:okhttp:$mockWebserverVersion")
 }
 
 tasks.withType<KotlinCompile> {
