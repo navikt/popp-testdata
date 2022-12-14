@@ -20,6 +20,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.*
 
 
 @SpringBootTest(classes = [PoppTestdataApp::class])
@@ -116,15 +117,8 @@ internal class PoppTestdataAppKtTest {
         return "Bearer ${
             server.issueToken(
                 issuerId = "aad",
-                clientId = "theclientid",
-                tokenCallback = DefaultOAuth2TokenCallback(
-                    "aad",
-                    "random",
-                    JOSEObjectType.JWT.type,
-                    listOf(audience),
-                    emptyMap(),
-                    3600
-                )
+                clientId = "client",
+                tokenCallback = DefaultOAuth2TokenCallback(issuerId = "aad", audience = listOf(audience))
             ).serialize()
         }"
     }
