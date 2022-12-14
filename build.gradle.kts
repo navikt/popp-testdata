@@ -1,20 +1,20 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val springVersion = "3.0.0"
-val kotlinVersion = "1.7.21"
+//val kotlinVersion = "1.7.21"
 val jacksonVersion = "2.14.1"
 val prometheusVersion = "1.10.2"
 val logbackEncoderVersion = "7.2"
 val navTokenSupportVersion = "3.0.0"
 val hibernateValidatorVersion = "7.0.4.Final"
 val mockWebserverVersion = "4.9.3"
-val wiremockVersion = "2.35.0"
+//val wiremockVersion = "2.35.0"
 
 plugins {
     id("org.springframework.boot") version "3.0.0"
-    //id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.spring") version "1.6.10"
+    id("io.spring.dependency-management") version "1.1.0"
+    kotlin("jvm") version "1.7.10"
+    kotlin("plugin.spring") version "1.7.10"
 }
 
 group = "no.nav.pensjon.opptjening"
@@ -30,8 +30,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator:$springVersion")
 
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
     // Log and metric
@@ -45,7 +43,7 @@ dependencies {
 
     // Test - setup
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-    testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
+   // testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
 
     // Test - token-validation-spring-test dependencies
     testImplementation("no.nav.security:token-validation-spring-test:$navTokenSupportVersion")

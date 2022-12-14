@@ -1,6 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata
 
-import com.github.tomakehurst.wiremock.junit5.WireMockTest
+//import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.nimbusds.jose.JOSEObjectType
 import no.nav.pensjon.opptjening.popptestdata.api.Environment
 import no.nav.security.mock.oauth2.MockOAuth2Server
@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 @AutoConfigureMockMvc
 @DirtiesContext
 @EnableMockOAuth2Server
-@WireMockTest(httpPort = 4567)
+//@WireMockTest(httpPort = 4567)
 @ActiveProfiles(profiles = ["local"])
 internal class PoppTestdataAppKtTest {
 
