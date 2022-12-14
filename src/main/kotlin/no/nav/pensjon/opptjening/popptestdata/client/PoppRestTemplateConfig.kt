@@ -6,10 +6,8 @@ import org.springframework.web.client.RestTemplate
 
 @Component
 class PoppRestTemplateConfig {
-
     @Bean
     fun template(): RestTemplate {
         return RestTemplate()
     }
-
 }

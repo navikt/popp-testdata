@@ -2,7 +2,6 @@ package no.nav.pensjon.opptjening.popptestdata
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import com.nimbusds.jose.JOSEObjectType
 import no.nav.pensjon.opptjening.popptestdata.api.Environment
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
@@ -20,7 +19,6 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.util.*
 
 
 @SpringBootTest(classes = [PoppTestdataApp::class])

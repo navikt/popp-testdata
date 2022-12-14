@@ -1,14 +1,13 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val springVersion = "3.0.0"
-//val kotlinVersion = "1.7.21"
 val jacksonVersion = "2.14.1"
 val prometheusVersion = "1.10.2"
 val logbackEncoderVersion = "7.2"
 val navTokenSupportVersion = "3.0.0"
 val hibernateValidatorVersion = "7.0.4.Final"
 val mockWebserverVersion = "4.9.3"
-//val wiremockVersion = "2.35.0"
 
 plugins {
     id("org.springframework.boot") version "3.0.0"
@@ -44,12 +43,9 @@ dependencies {
     // Test - setup
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
     testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner:3.0.0")
-    //testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
 
     // Test - token-validation-spring-test dependencies
     testImplementation("no.nav.security:token-validation-spring-test:$navTokenSupportVersion")
-    //testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebserverVersion")
-    //testImplementation("com.squareup.okhttp3:okhttp:$mockWebserverVersion")
 }
 
 tasks.withType<KotlinCompile> {
@@ -61,4 +57,7 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    testLogging {
+        events(PASSED, FAILED, SKIPPED)
+    }
 }
