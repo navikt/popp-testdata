@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service
 @Service
 class InntektService(private val poppInntektClient: PoppInntektClient) {
 
-    fun lagreInntekt(request: LagreInntektRequest) {
-        val inntektRequester = createInntektPoppRequests(request)
-
-        inntektRequester.forEach { poppInntektClient.lagreInntekt(it, request.environment) }
+    fun lagreInntekter(request: LagreInntektRequest) {
+        createInntektPoppRequests(request).forEach {
+            poppInntektClient.lagreInntekt(it, request.environment)
+        }
     }
 
     private fun createInntektPoppRequests(request: LagreInntektRequest) =

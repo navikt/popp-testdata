@@ -9,8 +9,4 @@ data class LagreInntektRequest(
     val tomAar: Int,
     val belop: Long,
     val redusertMedGrunnbelop: Boolean = false
-) {
-    override fun toString(): String {
-        return "Environment: $environment Fom: $fomAar Tom: $tomAar Belop: $belop Nedjustering: $redusertMedGrunnbelop"
-    }
-}
+)

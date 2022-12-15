@@ -1,5 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
+import no.nav.pensjon.opptjening.popptestdata.exceptionhandling.requestRequirement
 import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -8,16 +9,19 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
+
 @Protected
-class InntektApi(private val inntektService: InntektService) {
+@RestController
+class InntektController(private val inntektService: InntektService) {
     @PostMapping("/inntekt")
-    fun lagreInntekt(
+    fun lagreInntekter(
         @RequestHeader(value = "Nav-Call-Id", required = false, defaultValue = "sdf") callId: String,
         @RequestHeader(value = "Nav-Consumer-Id", required = false, defaultValue = "dolly") consumerId: String,
-        @RequestBody request: LagreInntektRequest
-    ): ResponseEntity<*>? {
-        inntektService.lagreInntekt(request)
+        @RequestBody request: LagreInntektRequest,
+    ): ResponseEntity<*> {
+        requestRequirement(request.fomAar <= request.tomAar) { "FomAr is grater than tomAr in request. fomAar was ${request.fomAar} and tomAar was ${request.tomAar}" }
+
+        inntektService.lagreInntekter(request)
         return ResponseEntity.ok(HttpStatus.OK)
     }
 }

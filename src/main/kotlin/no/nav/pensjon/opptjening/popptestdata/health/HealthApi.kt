@@ -17,5 +17,4 @@ class HealthApi {
 
     @GetMapping("/internal/isready")
     fun isready(): ResponseEntity<String> = ResponseEntity.ok("Is ready")
-
 }

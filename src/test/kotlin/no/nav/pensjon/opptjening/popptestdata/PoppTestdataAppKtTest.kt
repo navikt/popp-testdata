@@ -38,17 +38,6 @@ internal class PoppTestdataAppKtTest {
     }
 
     @Test
-    fun `Given an unauthorized audience when calling post inntekt then return 401`() {
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest(environment = Q1))
-                .header(HttpHeaders.AUTHORIZATION, createToken(audience = "unauthorizedAudience"))
-        )
-            .andExpect(status().isUnauthorized)
-    }
-
-    @Test
     fun `Given a valid lagreInntekt request when calling post inntekt then return 200 ok`() {
         wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q1_URL)).willReturn(aResponse().withStatus(200)))
 
@@ -89,6 +78,28 @@ internal class PoppTestdataAppKtTest {
             .andExpect(status().isOk)
 
         wiremock.verify(postRequestedFor(urlEqualTo(POPP_INNTEKT_Q2_URL)))
+    }
+
+    @Test
+    fun `Given an unauthorized audience when calling post inntekt then return 401`() {
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(inntektRequest(environment = Q1))
+                .header(HttpHeaders.AUTHORIZATION, createToken(audience = "unauthorizedAudience"))
+        )
+            .andExpect(status().isUnauthorized)
+    }
+
+    @Test
+    fun `Given an tomAr before fomAr when calling post inntekt then return 400 Bad Request`() {
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(inntektRequest(environment = Q1, fomAar = 2000, tomAar = 1999))
+                .header(HttpHeaders.AUTHORIZATION, createToken())
+        )
+            .andExpect(status().isBadRequest)
     }
 
     private fun inntektRequest(
