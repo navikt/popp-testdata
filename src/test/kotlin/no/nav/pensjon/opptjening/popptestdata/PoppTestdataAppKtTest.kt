@@ -7,6 +7,7 @@ import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +18,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON
 
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -100,6 +102,20 @@ internal class PoppTestdataAppKtTest {
                 .header(HttpHeaders.AUTHORIZATION, createToken())
         )
             .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `when calling get environment then return environment`(){
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/environment"))
+            .andExpect(status().isOk)
+            .andReturn()
+
+
+        val body = result.response.contentAsString
+        Environment.values().forEach {
+            assertTrue(body.contains(it.name), "Response did not contain environment ${it.name}")
+        }
+
     }
 
     private fun inntektRequest(

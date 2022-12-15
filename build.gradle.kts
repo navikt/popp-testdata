@@ -7,6 +7,7 @@ val prometheusVersion = "1.10.2"
 val logbackEncoderVersion = "7.2"
 val navTokenSupportVersion = "3.0.0"
 val hibernateValidatorVersion = "7.0.4.Final"
+val azureAdClientVersion = "0.0.7"
 val mockWebserverVersion = "4.9.3"
 
 plugins {
@@ -21,6 +22,12 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
+    maven("https://maven.pkg.github.com/navikt/pensjon-opptjening-azure-ad-client") {
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {
@@ -39,6 +46,7 @@ dependencies {
     implementation("no.nav.security:token-validation-spring:$navTokenSupportVersion")
     implementation("no.nav.security:token-client-spring:$navTokenSupportVersion")
     implementation("org.hibernate:hibernate-validator:$hibernateValidatorVersion")
+    implementation("no.nav.pensjonopptjening:pensjon-opptjening-azure-ad-client:$azureAdClientVersion")
 
     // Test - setup
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")

@@ -18,6 +18,10 @@ spec:
       value: https://pensjon-popp-q1.nais.preprod.local/popp/api
     - name: popp.url.q2
       value: https://pensjon-popp-q2.nais.preprod.local/popp/api
+    - name: POPP_Q1_API_ID
+      value: dev-fss.pensjonopptjening.pensjon-popp-q1
+    - name: POPP_Q2_API_ID
+      value: dev-fss.pensjonopptjening.pensjon-popp-q2
   image: {{ image }}
   ingresses:
     - https://popp-testdata.dev.intern.nav.no
