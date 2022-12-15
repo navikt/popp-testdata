@@ -20,11 +20,11 @@ jobs:
           echo "DATE=$(date "+%Y-%m-%d--%H-%M-%S")" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
       # SETTER IMAGE VARIABEL
-      - name: 'Setter Image Variabel'
+      - name: 'Setting Image Variabel'
         run: echo "IMAGE=docker.pkg.github.com/${{ github.repository }}/popp-testdata:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
       # SETTER IMAGE GHCR VARIABEL
-      - name: 'Setter Image Variabel'
+      - name: 'Setting Image ghcr Variabel'
         run: echo "IMAGE_GHCR=ghcr.io/${{ github.repository }}/popp-testdata:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
       # JAVA 17
