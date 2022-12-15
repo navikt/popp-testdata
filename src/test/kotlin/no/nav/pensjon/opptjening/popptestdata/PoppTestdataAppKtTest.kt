@@ -73,7 +73,7 @@ internal class PoppTestdataAppKtTest {
         )
             .andExpect(status().isOk)
 
-        wiremock.verify(1, postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL)))
+        wiremock.verify(postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL)))
     }
 
     @Test
@@ -88,7 +88,7 @@ internal class PoppTestdataAppKtTest {
         )
             .andExpect(status().isOk)
 
-        wiremock.verify(1, postRequestedFor(urlEqualTo(POPP_INNTEKT_Q2_URL)))
+        wiremock.verify(postRequestedFor(urlEqualTo(POPP_INNTEKT_Q2_URL)))
     }
 
     private fun inntektRequest(
