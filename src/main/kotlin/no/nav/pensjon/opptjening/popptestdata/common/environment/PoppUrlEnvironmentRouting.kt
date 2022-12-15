@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 @Component
-class PoppRouting(
+class PoppUrlEnvironmentRouting(
     @Value("\${popp.url.q1}") private val poppQ1Url: String,
     @Value("\${popp.url.q2}") private val poppQ2Url: String,
 ) {
