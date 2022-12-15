@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Protected
-class InntektApi(private val poppInntektClient: PoppInntektClient) {
+class InntektApi(private val inntektService: InntektService) {
     @PostMapping("/inntekt")
     fun lagreInntekt(
         @RequestHeader(value = "Nav-Call-Id", required = false, defaultValue = "sdf") callId: String,
         @RequestHeader(value = "Nav-Consumer-Id", required = false, defaultValue = "dolly") consumerId: String,
         @RequestBody request: LagreInntektRequest
     ): ResponseEntity<*>? {
-        poppInntektClient.lagreInntekt(request)
+        inntektService.lagreInntekt(request)
         return ResponseEntity.ok(HttpStatus.OK)
     }
 }
