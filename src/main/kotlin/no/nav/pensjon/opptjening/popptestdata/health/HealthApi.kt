@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.api.health
+package no.nav.pensjon.opptjening.popptestdata.health
 
 import no.nav.security.token.support.core.api.Unprotected
 import org.springframework.http.ResponseEntity

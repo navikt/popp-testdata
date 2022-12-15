@@ -1,7 +1,6 @@
-package no.nav.pensjon.opptjening.popptestdata.client.inntekt
+package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.api.PoppRouting
-import no.nav.pensjon.opptjening.popptestdata.api.inntekt.LagreInntektRequest
+import no.nav.pensjon.opptjening.popptestdata.environment.PoppRouting
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 

@@ -1,6 +1,6 @@
-package no.nav.pensjon.opptjening.popptestdata.api.inntekt
+package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.api.Environment
+import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 
 data class LagreInntektRequest(
     val environment: Environment,

@@ -1,6 +1,5 @@
-package no.nav.pensjon.opptjening.popptestdata.api.inntekt
+package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.client.inntekt.PoppInntektClient
 import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
