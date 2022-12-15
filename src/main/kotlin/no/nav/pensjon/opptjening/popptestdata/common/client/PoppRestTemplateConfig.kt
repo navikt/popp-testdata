@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.client
+package no.nav.pensjon.opptjening.popptestdata.common.client
 
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component

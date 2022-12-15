@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.environment
+package no.nav.pensjon.opptjening.popptestdata.common.environment
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

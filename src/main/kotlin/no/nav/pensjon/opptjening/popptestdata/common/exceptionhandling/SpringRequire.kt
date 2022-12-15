@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.exceptionhandling
+package no.nav.pensjon.opptjening.popptestdata.common.exceptionhandling
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException

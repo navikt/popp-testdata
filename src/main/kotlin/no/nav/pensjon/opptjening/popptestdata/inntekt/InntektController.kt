@@ -1,6 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.exceptionhandling.requestRequirement
+import no.nav.pensjon.opptjening.popptestdata.common.exceptionhandling.requestRequirement
 import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

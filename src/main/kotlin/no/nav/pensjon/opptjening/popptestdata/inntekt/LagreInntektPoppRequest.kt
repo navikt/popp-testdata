@@ -1,6 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.model.ChangeStamp
+import no.nav.pensjon.opptjening.popptestdata.common.model.ChangeStamp
 
 data class LagreInntektPoppRequest(
     val inntekt: Inntekt

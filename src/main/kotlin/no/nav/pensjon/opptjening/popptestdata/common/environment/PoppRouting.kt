@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.environment
+package no.nav.pensjon.opptjening.popptestdata.common.environment
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component

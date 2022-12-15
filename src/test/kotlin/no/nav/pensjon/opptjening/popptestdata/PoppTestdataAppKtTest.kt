@@ -2,7 +2,7 @@ package no.nav.pensjon.opptjening.popptestdata
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
