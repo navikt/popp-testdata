@@ -1,10 +1,12 @@
 package no.nav.pensjon.opptjening.popptestdata
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POPP_Q1_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POPP_Q2_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.inntekt.LagreInntektPoppRequest
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
@@ -18,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.contract.wiremock.WireMockSpring
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON
-
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -121,6 +122,34 @@ internal class PoppTestdataAppKtTest {
     }
 
     @Test
+    fun `Given post inntekt with fomAar 2000 and tomAr 2003 then call lagre inntekt in popp four times with inntekt fom 2000 to 2003`() {
+        val fomAar = 2000
+        val tomAar = 2003
+
+        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q1_URL)).willReturn(aResponse().withStatus(200)))
+
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(inntektRequest(environment = Q1, fomAar = fomAar, tomAar = tomAar))
+                .header(HttpHeaders.AUTHORIZATION, createToken())
+        )
+            .andExpect(status().isOk)
+
+
+
+        wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL)))
+
+        val requests = wiremock.findAll(postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL)))
+            .map { it.bodyAsString }
+            .map { jacksonObjectMapper().readValue(it, LagreInntektPoppRequest::class.java) }
+
+        (fomAar..tomAar).forEach { inntektAr ->
+            assertTrue(requests.any { it.inntekt.inntektAr == inntektAr }) { " Fant ikke inntektAr: $inntektAr " }
+        }
+    }
+
+    @Test
     fun `Given an unauthorized audience when calling post inntekt then return 401`() {
         mockMvc.perform(
             post("/inntekt")
@@ -143,17 +172,15 @@ internal class PoppTestdataAppKtTest {
     }
 
     @Test
-    fun `when calling get environment then return environment`(){
+    fun `when calling get environment then return environment`() {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/environment"))
             .andExpect(status().isOk)
             .andReturn()
-
 
         val body = result.response.contentAsString
         Environment.values().forEach {
             assertTrue(body.contains(it.name), "Response did not contain environment ${it.name}")
         }
-
     }
 
     private fun inntektRequest(
@@ -192,6 +219,7 @@ internal class PoppTestdataAppKtTest {
         private const val POPP_INNTEKT_Q2_URL = "/q2/inntekt"
         private val Q1 = Environment.Q1.name
         private val Q2 = Environment.Q2.name
+
 
         private val wiremock = WireMockServer(WireMockSpring.options().port(9991)).also { it.start() }
 
