@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <springProfile name="dev-fss">
+    <springProfile name="dev-gcp">
         <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>%level %logger %msg %n</pattern>
@@ -10,13 +10,13 @@
             </encoder>
         </appender>
 
-        <logger name="io" level="ERROR"/>
+        <!--logger name="io" level="ERROR"/>
         <logger name="org" level="ERROR"/>
         <logger name="com" level="ERROR"/>
         <logger name="no.nav" level="INFO"/>
         <logger name="no.nav.security" level="ERROR"/>
         <logger name="no.nav.pensjon.opptjening.popptestdata" level="INFO"/>
-        <logger name="no.nav.security.token.support.core.validation" level="ERROR"/>
+        <logger name="no.nav.security.token.support.core.validation" level="ERROR"/-->
 
         <root level="info">
             <appender-ref ref="stdout_json"/>

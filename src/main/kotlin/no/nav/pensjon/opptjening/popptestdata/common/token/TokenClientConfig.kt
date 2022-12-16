@@ -14,7 +14,7 @@ import java.net.URL
 class TokenClientConfig {
 
     @Bean("azureAdConfigQ1")
-    @Profile("dev-fss", "prod-fss")
+    @Profile("dev-gcp")
     fun azureAdConfigQ1(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
@@ -30,12 +30,13 @@ class TokenClientConfig {
     )
 
     @Bean("azureAdtokenProviderQ1")
-    @Profile("dev-fss", "prod-fss")
-    fun azureAdtokenProviderQ1(@Qualifier("azureAdConfigQ1") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
+    @Profile("dev-gcp")
+    fun azureAdtokenProviderQ1(@Qualifier("azureAdConfigQ1") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
+        AzureAdTokenProvider(azureAdVariableConfig)
 
 
     @Bean("azureAdConfigQ2")
-    @Profile("dev-fss", "prod-fss")
+    @Profile("dev-gcp")
     fun azureAdConfigQ2(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
@@ -51,8 +52,9 @@ class TokenClientConfig {
     )
 
     @Bean("azureAdtokenProviderQ2")
-    @Profile("dev-fss", "prod-fss")
-    fun azureAdtokenProviderQ2(@Qualifier("azureAdConfigQ2") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
+    @Profile("dev-gcp")
+    fun azureAdtokenProviderQ2(@Qualifier("azureAdConfigQ2") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
+        AzureAdTokenProvider(azureAdVariableConfig)
 
 
 }
