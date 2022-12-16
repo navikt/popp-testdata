@@ -44,7 +44,7 @@ internal class PoppTestdataAppKtTest {
 
     @Test
     fun `Given a valid lagreInntekt request when calling post inntekt then return 200 ok`() {
-        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q1_URL)).willReturn(aResponse().withStatus(200)))
+        wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
         mockMvc.perform(
             post("/inntekt")
@@ -57,7 +57,7 @@ internal class PoppTestdataAppKtTest {
 
     @Test
     fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1`() {
-        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q1_URL)).willReturn(aResponse().withStatus(200)))
+        wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
         mockMvc.perform(
             post("/inntekt")
@@ -67,12 +67,12 @@ internal class PoppTestdataAppKtTest {
         )
             .andExpect(status().isOk)
 
-        wiremock.verify(postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL)))
+        wiremock.verify(postRequestedFor(urlEqualToPoppQ1))
     }
 
     @Test
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2`() {
-        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q2_URL)).willReturn(aResponse().withStatus(200)))
+        wiremock.stubFor(post(urlEqualToPoppQ2).willReturn(aResponse().withStatus(200)))
 
         mockMvc.perform(
             post("/inntekt")
@@ -82,12 +82,12 @@ internal class PoppTestdataAppKtTest {
         )
             .andExpect(status().isOk)
 
-        wiremock.verify(postRequestedFor(urlEqualTo(POPP_INNTEKT_Q2_URL)))
+        wiremock.verify(postRequestedFor(urlEqualToPoppQ2))
     }
 
     @Test
     fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1 with Q1 token`() {
-        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q1_URL)).willReturn(aResponse().withStatus(200)))
+        wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
         mockMvc.perform(
             post("/inntekt")
@@ -98,14 +98,14 @@ internal class PoppTestdataAppKtTest {
             .andExpect(status().isOk)
 
         wiremock.verify(
-            postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL))
+            postRequestedFor(urlEqualToPoppQ1)
                 .withHeader("Authorization", equalTo("Bearer $POPP_Q1_TOKEN"))
         )
     }
 
     @Test
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2 with Q2 token`() {
-        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q2_URL)).willReturn(aResponse().withStatus(200)))
+        wiremock.stubFor(post(urlEqualToPoppQ2).willReturn(aResponse().withStatus(200)))
 
         mockMvc.perform(
             post("/inntekt")
@@ -116,7 +116,7 @@ internal class PoppTestdataAppKtTest {
             .andExpect(status().isOk)
 
         wiremock.verify(
-            postRequestedFor(urlEqualTo(POPP_INNTEKT_Q2_URL))
+            postRequestedFor(urlEqualToPoppQ2)
                 .withHeader("Authorization", equalTo("Bearer $POPP_Q2_TOKEN"))
         )
     }
@@ -126,7 +126,7 @@ internal class PoppTestdataAppKtTest {
         val fomAar = 2000
         val tomAar = 2003
 
-        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q1_URL)).willReturn(aResponse().withStatus(200)))
+        wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
         mockMvc.perform(
             post("/inntekt")
@@ -138,9 +138,9 @@ internal class PoppTestdataAppKtTest {
 
 
 
-        wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL)))
+        wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
 
-        val requests = wiremock.findAll(postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL)))
+        val requests = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
             .map { it.bodyAsString }
             .map { jacksonObjectMapper().readValue(it, LagreInntektPoppRequest::class.java) }
 
@@ -215,8 +215,10 @@ internal class PoppTestdataAppKtTest {
 
     companion object {
         private const val ACCEPTED_AUDIENCE = "testaud"
-        private const val POPP_INNTEKT_Q1_URL = "/q1/inntekt"
-        private const val POPP_INNTEKT_Q2_URL = "/q2/inntekt"
+
+        private val urlEqualToPoppQ1 = urlEqualTo("/q1/inntekt")
+        private val urlEqualToPoppQ2 = urlEqualTo("/q2/inntekt")
+
         private val Q1 = Environment.Q1.name
         private val Q2 = Environment.Q2.name
 
