@@ -18,7 +18,7 @@ class TokenClientConfig {
     fun azureAdConfigQ1(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
-        @Value("\${PGI_ENDRING_API_ID}") pgiEndringApiId: String,
+        @Value("\${POPP_Q1_API_ID}") pgiEndringApiId: String,
         @Value("\${AZURE_APP_WELL_KNOWN_URL}") wellKnownUrl: String,
         @Value("\${PROXY_URL:null}") proxyUrl: String?,
     ) = AzureAdVariableConfig(
@@ -40,7 +40,7 @@ class TokenClientConfig {
     fun azureAdConfigQ2(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
-        @Value("\${PGI_ENDRING_API_ID}") pgiEndringApiId: String,
+        @Value("\${POPP_Q2_API_ID}") pgiEndringApiId: String,
         @Value("\${AZURE_APP_WELL_KNOWN_URL}") wellKnownUrl: String,
         @Value("\${PROXY_URL:null}") proxyUrl: String?,
     ) = AzureAdVariableConfig(
