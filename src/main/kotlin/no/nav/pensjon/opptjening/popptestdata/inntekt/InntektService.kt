@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service
 class InntektService(private val poppInntektClient: PoppInntektClient) {
 
     fun lagreInntekter(request: LagreInntektRequest, environment: Environment) {
-        createInntektPoppRequests(request).forEach {
-            poppInntektClient.lagreInntekt(it, environment)
+        createInntektPoppRequests(request).forEach {poppRequest ->
+            poppInntektClient.lagreInntekt(poppRequest, environment)
         }
     }
 

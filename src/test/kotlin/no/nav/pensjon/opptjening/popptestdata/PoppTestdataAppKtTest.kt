@@ -5,6 +5,9 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POPP_Q1_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POPP_Q2_TOKEN
+import no.nav.pensjon.opptjening.popptestdata.common.client.HeaderInterceptor.Companion.ENVIRONMENT_HEADER
+import no.nav.pensjon.opptjening.popptestdata.common.client.HeaderInterceptor.Companion.NAV_CALL_ID
+import no.nav.pensjon.opptjening.popptestdata.common.client.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.inntekt.LagreInntektPoppRequest
 import no.nav.pensjon.opptjening.popptestdata.inntekt.LagreInntektRequest
@@ -52,7 +55,9 @@ internal class PoppTestdataAppKtTest {
                 .contentType(APPLICATION_JSON)
                 .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header("environment", Q1)
+                .header(ENVIRONMENT_HEADER, Q1)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
         )
             .andExpect(status().isOk)
     }
@@ -66,7 +71,9 @@ internal class PoppTestdataAppKtTest {
                 .contentType(APPLICATION_JSON)
                 .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header("environment", Q1)
+                .header(ENVIRONMENT_HEADER, Q1)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
         )
             .andExpect(status().isOk)
 
@@ -82,7 +89,9 @@ internal class PoppTestdataAppKtTest {
                 .contentType(APPLICATION_JSON)
                 .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header("environment", Q2)
+                .header(ENVIRONMENT_HEADER, Q2)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
         )
             .andExpect(status().isOk)
 
@@ -98,7 +107,9 @@ internal class PoppTestdataAppKtTest {
                 .contentType(APPLICATION_JSON)
                 .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header("environment", Q1)
+                .header(ENVIRONMENT_HEADER, Q1)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
         )
             .andExpect(status().isOk)
 
@@ -117,7 +128,9 @@ internal class PoppTestdataAppKtTest {
                 .contentType(APPLICATION_JSON)
                 .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header("environment", Q2)
+                .header(ENVIRONMENT_HEADER, Q2)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
         )
             .andExpect(status().isOk)
 
@@ -138,11 +151,12 @@ internal class PoppTestdataAppKtTest {
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
                 .content(inntektRequest(fomAar = fomAar, tomAar = tomAar))
-                .header("environment", Q1)
+                .header(ENVIRONMENT_HEADER, Q1)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
                 .header(HttpHeaders.AUTHORIZATION, createToken())
         )
             .andExpect(status().isOk)
-
 
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
@@ -172,7 +186,9 @@ internal class PoppTestdataAppKtTest {
                 .contentType(APPLICATION_JSON)
                 .content(jacksonObjectMapper().writeValueAsString(request))
                 .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header("environment", Q1)
+                .header(ENVIRONMENT_HEADER, Q1)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
         )
             .andExpect(status().isOk)
 
@@ -206,7 +222,9 @@ internal class PoppTestdataAppKtTest {
                 .contentType(APPLICATION_JSON)
                 .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken(audience = "unauthorizedAudience"))
-                .header("environment", Q1)
+                .header(ENVIRONMENT_HEADER, Q1)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
         )
             .andExpect(status().isUnauthorized)
     }
@@ -218,7 +236,9 @@ internal class PoppTestdataAppKtTest {
                 .contentType(APPLICATION_JSON)
                 .content(inntektRequest(fomAar = 2000, tomAar = 1999))
                 .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header("environment", Q1)
+                .header(ENVIRONMENT_HEADER, Q1)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
         )
             .andExpect(status().isBadRequest)
     }
