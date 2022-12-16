@@ -1,13 +1,14 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
+import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
 import org.springframework.stereotype.Service
 
 @Service
 class InntektService(private val poppInntektClient: PoppInntektClient) {
 
-    fun lagreInntekter(request: LagreInntektRequest) {
+    fun lagreInntekter(request: LagreInntektRequest, environment: Environment) {
         createInntektPoppRequests(request).forEach {
-            poppInntektClient.lagreInntekt(it, request.environment)
+            poppInntektClient.lagreInntekt(it, environment)
         }
     }
 

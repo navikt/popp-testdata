@@ -50,8 +50,9 @@ internal class PoppTestdataAppKtTest {
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(inntektRequest(environment = Q1))
+                .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header("environment", Q1)
         )
             .andExpect(status().isOk)
     }
@@ -63,8 +64,9 @@ internal class PoppTestdataAppKtTest {
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(inntektRequest(environment = Q1))
+                .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header("environment", Q1)
         )
             .andExpect(status().isOk)
 
@@ -78,8 +80,9 @@ internal class PoppTestdataAppKtTest {
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(inntektRequest(environment = Q2))
+                .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header("environment", Q2)
         )
             .andExpect(status().isOk)
 
@@ -93,8 +96,9 @@ internal class PoppTestdataAppKtTest {
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(inntektRequest(environment = Q1))
+                .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header("environment", Q1)
         )
             .andExpect(status().isOk)
 
@@ -111,8 +115,9 @@ internal class PoppTestdataAppKtTest {
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(inntektRequest(environment = Q2))
+                .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header("environment", Q2)
         )
             .andExpect(status().isOk)
 
@@ -132,7 +137,8 @@ internal class PoppTestdataAppKtTest {
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(inntektRequest(environment = Q1, fomAar = fomAar, tomAar = tomAar))
+                .content(inntektRequest(fomAar = fomAar, tomAar = tomAar))
+                .header("environment", Q1)
                 .header(HttpHeaders.AUTHORIZATION, createToken())
         )
             .andExpect(status().isOk)
@@ -153,7 +159,6 @@ internal class PoppTestdataAppKtTest {
     @Test
     fun `Given post inntekt with environment Q1, fnr 09876543210 ,fomAar 2000, tomAar 2000, belop 20000L then call lagre inntekt in one time with inntekt that contains input`() {
         val request = LagreInntektRequest(
-            environment = Environment.Q1,
             fnr = "09876543210",
             fomAar = 2000,
             tomAar = 2000,
@@ -167,6 +172,7 @@ internal class PoppTestdataAppKtTest {
                 .contentType(APPLICATION_JSON)
                 .content(jacksonObjectMapper().writeValueAsString(request))
                 .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header("environment", Q1)
         )
             .andExpect(status().isOk)
 
@@ -198,8 +204,9 @@ internal class PoppTestdataAppKtTest {
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(inntektRequest(environment = Q1))
+                .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken(audience = "unauthorizedAudience"))
+                .header("environment", Q1)
         )
             .andExpect(status().isUnauthorized)
     }
@@ -209,7 +216,19 @@ internal class PoppTestdataAppKtTest {
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
-                .content(inntektRequest(environment = Q1, fomAar = 2000, tomAar = 1999))
+                .content(inntektRequest(fomAar = 2000, tomAar = 1999))
+                .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header("environment", Q1)
+        )
+            .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `Given empty environment header when calling post inntekt then return 400 Bad Request`() {
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(inntektRequest())
                 .header(HttpHeaders.AUTHORIZATION, createToken())
         )
             .andExpect(status().isBadRequest)
@@ -228,7 +247,6 @@ internal class PoppTestdataAppKtTest {
     }
 
     private fun inntektRequest(
-        environment: String? = Q1,
         fnr: String? = "01234567890",
         fomAar: Int? = 2000,
         tomAar: Int? = 2001,
@@ -237,7 +255,6 @@ internal class PoppTestdataAppKtTest {
     ): String {
         return """
             {
-                "environment": "$environment",
                 "fnr": "$fnr",
                 "fomAar": $fomAar,
                 "tomAar": $tomAar,
