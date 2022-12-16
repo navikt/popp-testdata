@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service
 class InntektService(private val poppInntektClient: PoppInntektClient) {
 
     fun lagreInntekter(request: LagreInntektRequest, environment: Environment) {
-        createInntektPoppRequests(request).forEach {poppRequest ->
+        val poppInntektRequests = createPoppInntektRequests(request)
+
+        poppInntektRequests.forEach { poppRequest ->
             poppInntektClient.lagreInntekt(poppRequest, environment)
         }
     }
 
-    private fun createInntektPoppRequests(request: LagreInntektRequest) =
+    private fun createPoppInntektRequests(request: LagreInntektRequest) =
         (request.fomAar..request.tomAar).map { inntektAr ->
             LagreInntektPoppRequest(
                 Inntekt(
