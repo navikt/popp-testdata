@@ -10,13 +10,12 @@
             </encoder>
         </appender>
 
-        <!--logger name="io" level="ERROR"/>
-        <logger name="org" level="ERROR"/>
-        <logger name="com" level="ERROR"/>
-        <logger name="no.nav" level="INFO"/>
-        <logger name="no.nav.security" level="ERROR"/>
-        <logger name="no.nav.pensjon.opptjening.popptestdata" level="INFO"/>
-        <logger name="no.nav.security.token.support.core.validation" level="ERROR"/-->
+        <logger name="io" level="WARN"/>
+        <logger name="org" level="WARN"/>
+        <logger name="com" level="WARN"/>
+        <logger name="no.nav.security" level="WARN"/>
+        <logger name="no.nav.pensjon.opptjening" level="INFO"/>
+        <logger name="no.nav.security.token.support.core.validation" level="WARN"/>
 
         <root level="info">
             <appender-ref ref="stdout_json"/>
