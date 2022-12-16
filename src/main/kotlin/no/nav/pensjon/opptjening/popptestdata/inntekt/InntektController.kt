@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 
 
 @Protected
@@ -25,6 +26,8 @@ class InntektController(private val inntektService: InntektService) {
         @RequestBody request: LagreInntektRequest,
     ): ResponseEntity<*> {
         requestRequirement(request.fomAar <= request.tomAar) { "FomAr is grater than tomAr in request. fomAar was ${request.fomAar} and tomAar was ${request.tomAar}" }
+        requestRequirement(request.fomAar >= 1968) { "FomAr is before 1968. fomAar was ${request.fomAar}"}
+        requestRequirement(request.tomAar <= LocalDate.now().year) { "TomAr is after current year ${LocalDate.now().year}. fomAar was ${request.tomAar}"}
 
         inntektService.lagreInntekter(request, environment)
         return ResponseEntity.ok(HttpStatus.OK)
