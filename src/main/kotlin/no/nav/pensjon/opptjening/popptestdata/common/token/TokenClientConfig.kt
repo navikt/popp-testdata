@@ -26,7 +26,7 @@ class TokenClientConfig {
         azureAppClientSecret = azureAppClientSecret,
         targetApiId = pgiEndringApiId,
         wellKnownUrl = wellKnownUrl,
-        proxyUrl = proxyUrl?.let { URL(proxyUrl) }
+        proxyUrl = proxyUrl?.let { if (proxyUrl == "null") null else URL(proxyUrl) }
     )
 
     @Bean("azureAdtokenProviderQ1")
@@ -48,7 +48,7 @@ class TokenClientConfig {
         azureAppClientSecret = azureAppClientSecret,
         targetApiId = pgiEndringApiId,
         wellKnownUrl = wellKnownUrl,
-        proxyUrl = proxyUrl?.let { URL(proxyUrl) }
+        proxyUrl = proxyUrl?.let { if (proxyUrl == "null") null else URL(proxyUrl) }
     )
 
     @Bean("azureAdtokenProviderQ2")
