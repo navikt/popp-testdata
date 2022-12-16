@@ -7,11 +7,12 @@ import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POP
 import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POPP_Q2_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.inntekt.LagreInntektPoppRequest
+import no.nav.pensjon.opptjening.popptestdata.inntekt.LagreInntektRequest
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -140,13 +141,56 @@ internal class PoppTestdataAppKtTest {
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
 
-        val requests = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
+        val poppRequests = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
             .map { it.bodyAsString }
             .map { jacksonObjectMapper().readValue(it, LagreInntektPoppRequest::class.java) }
 
         (fomAar..tomAar).forEach { inntektAr ->
-            assertTrue(requests.any { it.inntekt.inntektAr == inntektAr }) { " Fant ikke inntektAr: $inntektAr " }
+            assertTrue(poppRequests.any { it.inntekt.inntektAr == inntektAr }) { " Fant ikke inntektAr: $inntektAr " }
         }
+    }
+
+    @Test
+    fun `Given post inntekt with environment Q1, fnr 09876543210 ,fomAar 2000, tomAar 2000, belop 20000L then call lagre inntekt in one time with inntekt that contains input`() {
+        val request = LagreInntektRequest(
+            environment = Environment.Q1,
+            fnr = "09876543210",
+            fomAar = 2000,
+            tomAar = 2000,
+            belop = 20000L
+        )
+
+        wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
+
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(jacksonObjectMapper().writeValueAsString(request))
+                .header(HttpHeaders.AUTHORIZATION, createToken())
+        )
+            .andExpect(status().isOk)
+
+
+
+        wiremock.verify(1, postRequestedFor(urlEqualToPoppQ1))
+        val poppRequest = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
+            .map { it.bodyAsString }
+            .map { jacksonObjectMapper().readValue(it, LagreInntektPoppRequest::class.java) }
+            .first()
+
+        //Mapped from request
+        assertEquals(request.fnr, poppRequest.inntekt.fnr)
+        assertEquals(request.belop, poppRequest.inntekt.belop)
+        assertEquals(request.fomAar, poppRequest.inntekt.inntektAr)
+
+        //Default values
+        assertEquals("PEN", poppRequest.inntekt.kilde)
+        assertEquals("1337", poppRequest.inntekt.kommune)
+        assertEquals("INN_LON", poppRequest.inntekt.inntektType)
+        assertEquals("POPPTESTDATA", poppRequest.inntekt.changeStamp.createdBy)
+        assertEquals("POPPTESTDATA", poppRequest.inntekt.changeStamp.updatedBy)
+        assertNotNull(poppRequest.inntekt.changeStamp.createdDate)
+        assertNotNull(poppRequest.inntekt.changeStamp.updatedDate)
     }
 
     @Test
