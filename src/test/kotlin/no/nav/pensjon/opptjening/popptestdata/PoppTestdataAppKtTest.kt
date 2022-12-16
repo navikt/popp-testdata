@@ -2,6 +2,8 @@ package no.nav.pensjon.opptjening.popptestdata
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POPP_Q1_TOKEN
+import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POPP_Q2_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
@@ -80,6 +82,42 @@ internal class PoppTestdataAppKtTest {
             .andExpect(status().isOk)
 
         wiremock.verify(postRequestedFor(urlEqualTo(POPP_INNTEKT_Q2_URL)))
+    }
+
+    @Test
+    fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1 with Q1 token`() {
+        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q1_URL)).willReturn(aResponse().withStatus(200)))
+
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(inntektRequest(environment = Q1))
+                .header(HttpHeaders.AUTHORIZATION, createToken())
+        )
+            .andExpect(status().isOk)
+
+        wiremock.verify(
+            postRequestedFor(urlEqualTo(POPP_INNTEKT_Q1_URL))
+                .withHeader("Authorization", equalTo("Bearer $POPP_Q1_TOKEN"))
+        )
+    }
+
+    @Test
+    fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2 with Q2 token`() {
+        wiremock.stubFor(post(urlEqualTo(POPP_INNTEKT_Q2_URL)).willReturn(aResponse().withStatus(200)))
+
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(inntektRequest(environment = Q2))
+                .header(HttpHeaders.AUTHORIZATION, createToken())
+        )
+            .andExpect(status().isOk)
+
+        wiremock.verify(
+            postRequestedFor(urlEqualTo(POPP_INNTEKT_Q2_URL))
+                .withHeader("Authorization", equalTo("Bearer $POPP_Q2_TOKEN"))
+        )
     }
 
     @Test
