@@ -5,10 +5,10 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import no.nav.pensjon.opptjening.popptestdata.MockPoppTokenProviderConfig.Companion.POPP_Q1_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.MockPoppTokenProviderConfig.Companion.POPP_Q2_TOKEN
+import no.nav.pensjon.opptjening.popptestdata.common.DEFAULT_CHANGED_BY
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CALL_ID
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
-import no.nav.pensjon.opptjening.popptestdata.common.DEFAULT_CHANGED_BY
 import no.nav.pensjon.opptjening.popptestdata.inntekt.*
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.ENVIRONMENT_HEADER
 import no.nav.security.mock.oauth2.MockOAuth2Server
@@ -87,7 +87,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2 with Q2 token`() {
         wiremock.stubFor(post(urlEqualToPoppQ2).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q2).andExpect(status().isOk)
+        performPostInntekt(environment = Q2).andExpect(status().isOk)
 
         wiremock.verify(
             postRequestedFor(urlEqualToPoppQ2)
@@ -192,13 +192,17 @@ internal class PoppTestdataAppKtTest {
 
     @Test
     fun `Given empty environment header when calling post inntekt then return 400 Bad Request`() {
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest())
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-        )
-            .andExpect(status().isBadRequest)
+        performPostInntekt(environment = null).andExpect(status().isBadRequest).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `Given empty navCallId header when calling post inntekt then return 400 Bad Request`() {
+        performPostInntekt(navCallId = null).andExpect(status().isBadRequest).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `Given empty navConsumerId header when calling post inntekt then return 400 Bad Request`() {
+        performPostInntekt(navConsumerId = null).andExpect(status().isBadRequest).andExpect(status().isBadRequest)
     }
 
     @Test
@@ -234,16 +238,20 @@ internal class PoppTestdataAppKtTest {
     private fun performPostInntekt(
         request: String = inntektRequest(),
         token: String = createToken(),
-        environment: String = Q1,
+        environment: String? = Q1,
+        navCallId: String? = "test",
+        navConsumerId : String? = "test"
     ) =
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
                 .content(request)
                 .header(HttpHeaders.AUTHORIZATION, token)
-                .header(ENVIRONMENT_HEADER, environment)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
+                .apply {
+                    environment?.let { header(ENVIRONMENT_HEADER, environment) }
+                    navCallId?.let { header(NAV_CALL_ID, navCallId) }
+                    navConsumerId?.let { header(NAV_CONSUMER_ID, navConsumerId) }
+                }
         )
 
     private fun createToken(audience: String = ACCEPTED_AUDIENCE): String {
