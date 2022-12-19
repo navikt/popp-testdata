@@ -6,11 +6,9 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
 @Component
-class PoppRestTemplateConfig {
+class RestTemplateConfig {
     @Bean
-    fun template(headerInterceptor: HeaderInterceptor): RestTemplate {
-        return RestTemplateBuilder()
-            .additionalInterceptors(headerInterceptor)
-            .build()
-    }
+    fun poppTemplate(headerInterceptor: HeaderInterceptor): RestTemplate = RestTemplateBuilder()
+        .additionalInterceptors(headerInterceptor)
+        .build()
 }

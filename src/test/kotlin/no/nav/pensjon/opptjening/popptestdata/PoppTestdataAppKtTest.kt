@@ -216,6 +216,36 @@ internal class PoppTestdataAppKtTest {
     }
 
     @Test
+    fun `Given post inntekt with redusertMedGrunnbelop true, fomAar 2000 and tomAr 2003 then call lagre inntekt in popp with inntekt redusert with grunnbelop before 2003`() {
+        val fomAar = 2000
+        val tomAar = 2003
+
+        wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
+
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(inntektRequest(fomAar = fomAar, tomAar = tomAar, redusertMedGrunnbelop = true))
+                .header(ENVIRONMENT_HEADER, Q1)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
+                .header(HttpHeaders.AUTHORIZATION, createToken())
+        )
+            .andExpect(status().isOk)
+
+
+        wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
+
+        val poppRequests = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
+            .map { it.bodyAsString }
+            .map { jacksonObjectMapper().readValue(it, LagreInntektPoppRequest::class.java) }
+
+        (fomAar..tomAar).forEach { inntektAr ->
+            assertTrue(poppRequests.any { it.inntekt.inntektAr == inntektAr }) { " Fant ikke inntektAr: $inntektAr " }
+        }
+    }
+
+    @Test
     fun `Given an unauthorized audience when calling post inntekt then return 401`() {
         mockMvc.perform(
             post("/inntekt")

@@ -2,7 +2,6 @@ popp.url:
   q1: "http://localhost:9991/q1"
   q2: "http://localhost:9991/q2"
 
-
 no.nav.security.jwt:
   issuer.aad:
     discoveryurl: http://localhost:${mock-oauth2-server.port}/aad/.well-known/openid-configuration
