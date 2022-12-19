@@ -50,14 +50,14 @@ internal class PoppTestdataAppKtTest {
     fun `Given a valid lagreInntekt request when calling post inntekt then return 200 ok`() {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt()
+        performPostInntekt().andExpect(status().isOk)
     }
 
     @Test
     fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1`() {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(environment = Q1)
+        performPostInntekt(environment = Q1).andExpect(status().isOk)
 
         wiremock.verify(postRequestedFor(urlEqualToPoppQ1))
     }
@@ -66,7 +66,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2`() {
         wiremock.stubFor(post(urlEqualToPoppQ2).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(environment = Q2)
+        performPostInntekt(environment = Q2).andExpect(status().isOk)
 
         wiremock.verify(postRequestedFor(urlEqualToPoppQ2))
     }
@@ -75,7 +75,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1 with Q1 token`() {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(environment = Q1)
+        performPostInntekt(environment = Q1).andExpect(status().isOk)
 
         wiremock.verify(
             postRequestedFor(urlEqualToPoppQ1)
@@ -87,7 +87,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2 with Q2 token`() {
         wiremock.stubFor(post(urlEqualToPoppQ2).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q2)
+        performPostInntekt(Q2).andExpect(status().isOk)
 
         wiremock.verify(
             postRequestedFor(urlEqualToPoppQ2)
@@ -102,7 +102,7 @@ internal class PoppTestdataAppKtTest {
 
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(request = inntektRequest(fomAar = fomAar, tomAar = tomAar))
+        performPostInntekt(request = inntektRequest(fomAar = fomAar, tomAar = tomAar)).andExpect(status().isOk)
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
 
@@ -126,7 +126,7 @@ internal class PoppTestdataAppKtTest {
 
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(request = jacksonObjectMapper().writeValueAsString(request))
+        performPostInntekt(request = jacksonObjectMapper().writeValueAsString(request)).andExpect(status().isOk)
 
         wiremock.verify(1, postRequestedFor(urlEqualToPoppQ1))
         val poppRequest = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
@@ -162,7 +162,7 @@ internal class PoppTestdataAppKtTest {
 
         performPostInntekt(
             request = inntektRequest(fomAar = fomAar, tomAar = tomAar, belop = belop2003, redusertMedGrunnbelop = true)
-        )
+        ).andExpect(status().isOk)
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
 
@@ -249,7 +249,7 @@ internal class PoppTestdataAppKtTest {
         """
     }
 
-    private fun performPostInntekt(environment: String = Q1, request: String = inntektRequest()) {
+    private fun performPostInntekt(environment: String = Q1, request: String = inntektRequest()) =
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
@@ -259,8 +259,6 @@ internal class PoppTestdataAppKtTest {
                 .header(NAV_CALL_ID, "test")
                 .header(NAV_CONSUMER_ID, "test")
         )
-            .andExpect(status().isOk)
-    }
 
     private fun createToken(audience: String = ACCEPTED_AUDIENCE): String {
         return "Bearer ${
@@ -283,7 +281,6 @@ internal class PoppTestdataAppKtTest {
 
         private val Q1 = Environment.Q1.name
         private val Q2 = Environment.Q2.name
-
 
         private val wiremock = WireMockServer(WireMockSpring.options().port(9991)).also { it.start() }
 
