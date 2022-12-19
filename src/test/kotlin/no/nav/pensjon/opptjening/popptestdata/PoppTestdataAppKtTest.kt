@@ -3,8 +3,8 @@ package no.nav.pensjon.opptjening.popptestdata
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POPP_Q1_TOKEN
-import no.nav.pensjon.opptjening.popptestdata.MockAzureTokenConfig.Companion.POPP_Q2_TOKEN
+import no.nav.pensjon.opptjening.popptestdata.MockPoppTokenProviderConfig.Companion.POPP_Q1_TOKEN
+import no.nav.pensjon.opptjening.popptestdata.MockPoppTokenProviderConfig.Companion.POPP_Q2_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.ENVIRONMENT_HEADER
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CALL_ID
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID

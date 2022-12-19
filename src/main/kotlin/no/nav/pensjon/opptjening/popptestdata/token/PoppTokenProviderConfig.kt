@@ -11,11 +11,11 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.net.URL
 
 @Configuration
-class TokenClientConfig {
+class PoppTokenProviderConfig {
 
-    @Bean("azureAdConfigQ1")
+    @Bean("poppAzureAdConfigQ1")
     @Profile("dev-gcp")
-    fun azureAdConfigQ1(
+    fun poppAzureAdConfigQ1(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
         @Value("\${POPP_Q1_API_ID}") pgiEndringApiId: String,
@@ -29,15 +29,9 @@ class TokenClientConfig {
         proxyUrl = proxyUrl?.let { if (proxyUrl == "null") null else URL(proxyUrl) }
     )
 
-    @Bean("azureAdtokenProviderQ1")
+    @Bean("poppAzureAdConfigQ2")
     @Profile("dev-gcp")
-    fun azureAdtokenProviderQ1(@Qualifier("azureAdConfigQ1") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
-        AzureAdTokenProvider(azureAdVariableConfig)
-
-
-    @Bean("azureAdConfigQ2")
-    @Profile("dev-gcp")
-    fun azureAdConfigQ2(
+    fun poppAzureAdConfigQ2(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
         @Value("\${POPP_Q2_API_ID}") pgiEndringApiId: String,
@@ -51,8 +45,13 @@ class TokenClientConfig {
         proxyUrl = proxyUrl?.let { if (proxyUrl == "null") null else URL(proxyUrl) }
     )
 
-    @Bean("azureAdtokenProviderQ2")
+    @Bean("poppTokenProviderQ1")
     @Profile("dev-gcp")
-    fun azureAdtokenProviderQ2(@Qualifier("azureAdConfigQ2") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
+    fun poppTokenProviderQ1(@Qualifier("poppAzureAdConfigQ1") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
+        AzureAdTokenProvider(azureAdVariableConfig)
+
+    @Bean("poppTokenProviderQ2")
+    @Profile("dev-gcp")
+    fun poppTokenProviderQ2(@Qualifier("poppAzureAdConfigQ2") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
         AzureAdTokenProvider(azureAdVariableConfig)
 }

@@ -7,8 +7,8 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 
 @Component
 class PoppToken(
-    @Qualifier("azureAdtokenProviderQ1") private val poppTokenProviderQ1: TokenProvider,
-    @Qualifier("azureAdtokenProviderQ2") private val poppTokenProviderQ2: TokenProvider,
+    @Qualifier("poppTokenProviderQ1") private val poppTokenProviderQ1: TokenProvider,
+    @Qualifier("poppTokenProviderQ2") private val poppTokenProviderQ2: TokenProvider,
 ) {
     internal fun getToken(environment: Environment) = when (environment) {
         Environment.Q1 -> poppTokenProviderQ1.getToken()
