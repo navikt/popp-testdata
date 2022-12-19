@@ -161,8 +161,7 @@ internal class PoppTestdataAppKtTest {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
         performPostInntekt(
-            Q1,
-            inntektRequest(fomAar = fomAar, tomAar = tomAar, belop = belop2003, redusertMedGrunnbelop = true)
+            request = inntektRequest(fomAar = fomAar, tomAar = tomAar, belop = belop2003, redusertMedGrunnbelop = true)
         )
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))

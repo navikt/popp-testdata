@@ -14,8 +14,8 @@ data class Inntekt(
     val fnr: String,
     val inntektAr: Int,
     val belop: Long,
-    val changeStamp: ChangeStamp = ChangeStamp(),
     val kilde: String = DEFAULT_KILDE,
     val kommune: String = DEFAULT_KOMMUNE,
-    val inntektType: String = DEFAULT_INNTEKT_TYPE
+    val inntektType: String = DEFAULT_INNTEKT_TYPE,
+    val changeStamp: ChangeStamp = ChangeStamp(),
 )
