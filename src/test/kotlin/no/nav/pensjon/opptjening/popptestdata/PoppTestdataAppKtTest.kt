@@ -182,30 +182,12 @@ internal class PoppTestdataAppKtTest {
 
     @Test
     fun `Given an unauthorized audience when calling post inntekt then return 401`() {
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest())
-                .header(HttpHeaders.AUTHORIZATION, createToken(audience = "unauthorizedAudience"))
-                .header(ENVIRONMENT_HEADER, Q1)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-        )
-            .andExpect(status().isUnauthorized)
+        performPostInntekt(token = createToken(audience = "unauthorizedAudience")).andExpect(status().isUnauthorized)
     }
 
     @Test
     fun `Given an tomAr before fomAr when calling post inntekt then return 400 Bad Request`() {
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest(fomAar = 2000, tomAar = 1999))
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header(ENVIRONMENT_HEADER, Q1)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-        )
-            .andExpect(status().isBadRequest)
+        performPostInntekt(request = inntektRequest(fomAar = 2000, tomAar = 1999)).andExpect(status().isBadRequest)
     }
 
     @Test
@@ -249,12 +231,16 @@ internal class PoppTestdataAppKtTest {
         """
     }
 
-    private fun performPostInntekt(environment: String = Q1, request: String = inntektRequest()) =
+    private fun performPostInntekt(
+        request: String = inntektRequest(),
+        token: String = createToken(),
+        environment: String = Q1,
+    ) =
         mockMvc.perform(
             post("/inntekt")
                 .contentType(APPLICATION_JSON)
                 .content(request)
-                .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header(HttpHeaders.AUTHORIZATION, token)
                 .header(ENVIRONMENT_HEADER, environment)
                 .header(NAV_CALL_ID, "test")
                 .header(NAV_CONSUMER_ID, "test")
