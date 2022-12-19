@@ -111,7 +111,7 @@ internal class PoppTestdataAppKtTest {
             .map { jacksonObjectMapper().readValue(it, LagreInntektPoppRequest::class.java) }
 
         (fomAar..tomAar).forEach { inntektAr ->
-            assertTrue(poppRequests.any { it.inntekt.inntektAr == inntektAr }) { " Fant ikke inntektAr: $inntektAr " }
+            assertNotNull(poppRequests.getInntekt(inntektAr)) { " Fant ikke inntektAr: $inntektAr " }
         }
     }
 
@@ -153,20 +153,29 @@ internal class PoppTestdataAppKtTest {
     fun `Given post inntekt with redusertMedGrunnbelop true, fomAar 2000 and tomAr 2003 then call lagre inntekt in popp with inntekt redusert with grunnbelop before 2003`() {
         val fomAar = 2000
         val tomAar = 2003
+        val belop2003 = 500501L
+        val belop2002 = 476076L // 476076,937549138732042
+        val belop2001 = 452556L // 452556,145075405636853
+        val belop2000 = 432648L // 432648,432510185137127
 
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q1, inntektRequest(fomAar = fomAar, tomAar = tomAar, redusertMedGrunnbelop = true))
+        performPostInntekt(Q1, inntektRequest(fomAar = fomAar, tomAar = tomAar, belop = belop2003, redusertMedGrunnbelop = true))
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
 
-        val poppRequests = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
+        val poppRequests: List<LagreInntektPoppRequest> = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
             .map { it.bodyAsString }
             .map { jacksonObjectMapper().readValue(it, LagreInntektPoppRequest::class.java) }
 
         (fomAar..tomAar).forEach { inntektAr ->
-            assertTrue(poppRequests.any { it.inntekt.inntektAr == inntektAr }) { " Fant ikke inntektAr: $inntektAr " }
+            assertNotNull(poppRequests.getInntekt(inntektAr)) { " Fant ikke inntektAr: $inntektAr " }
         }
+
+        assertEquals(belop2003, poppRequests.getInntekt(tomAar)!!.belop)
+        assertEquals(belop2002, poppRequests.getInntekt(2002)!!.belop)
+        assertEquals(belop2001, poppRequests.getInntekt(2001)!!.belop)
+        assertEquals(belop2000, poppRequests.getInntekt(fomAar)!!.belop)
     }
 
     @Test
@@ -260,6 +269,8 @@ internal class PoppTestdataAppKtTest {
         )
             .andExpect(status().isOk)
     }
+
+    fun List<LagreInntektPoppRequest>.getInntekt(ar: Int) = this.map { it.inntekt }.firstOrNull { it.inntektAr == ar }
 
     companion object {
         private const val ACCEPTED_AUDIENCE = "testaud"
