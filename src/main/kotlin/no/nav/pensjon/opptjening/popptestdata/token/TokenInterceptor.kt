@@ -1,36 +1,31 @@
-package no.nav.pensjon.opptjening.popptestdata.common
+package no.nav.pensjon.opptjening.popptestdata.token
 
 import jakarta.servlet.http.HttpServletRequest
+import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpRequest
-import org.springframework.http.MediaType
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
 import org.springframework.stereotype.Component
 
 @Component
-class HeaderInterceptor : ClientHttpRequestInterceptor {
+class TokenInterceptor(private val poppToken: PoppToken) : ClientHttpRequestInterceptor {
 
     @Autowired
     var controllerRequest: HttpServletRequest? = null
 
-    companion object {
-        const val NAV_CALL_ID = "Nav-Call-Id"
-        const val NAV_CONSUMER_ID = "Nav-Consumer-Id"
+    companion object{
+        const val ENVIRONMENT_HEADER = "environment"
     }
 
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
-        val callId = controllerRequest!!.getHeader(NAV_CALL_ID)
-        val consumerId = controllerRequest!!.getHeader(NAV_CONSUMER_ID)
+        val environment = Environment.valueOf(controllerRequest!!.getHeader(ENVIRONMENT_HEADER).toString())
 
-        request.headers.apply {
-            add(NAV_CALL_ID, callId)
-            add(NAV_CONSUMER_ID, consumerId)
-            accept = listOf(MediaType.APPLICATION_JSON)
-            contentType = MediaType.APPLICATION_JSON
-        }
+        request.headers.setBearerAuth(poppToken.getToken(environment))
 
         return execution.execute(request, body)
     }
 }
+
+

@@ -1,10 +1,10 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.ENVIRONMENT_HEADER
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CALL_ID
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.common.requestRequirement
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.ENVIRONMENT_HEADER
 import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
