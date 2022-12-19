@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.common.model
+package no.nav.pensjon.opptjening.popptestdata.common
 
 import java.util.*
 

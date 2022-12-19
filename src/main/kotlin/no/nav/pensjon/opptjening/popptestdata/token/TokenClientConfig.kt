@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.common.token
+package no.nav.pensjon.opptjening.popptestdata.token
 
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -55,6 +55,4 @@ class TokenClientConfig {
     @Profile("dev-gcp")
     fun azureAdtokenProviderQ2(@Qualifier("azureAdConfigQ2") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
         AzureAdTokenProvider(azureAdVariableConfig)
-
-
 }

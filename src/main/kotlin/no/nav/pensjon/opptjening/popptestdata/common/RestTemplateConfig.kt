@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.common.client
+package no.nav.pensjon.opptjening.popptestdata.common
 
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean

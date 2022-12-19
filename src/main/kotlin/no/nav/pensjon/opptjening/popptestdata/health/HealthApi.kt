@@ -1,6 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata.health
 
-import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.security.token.support.core.api.Unprotected
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

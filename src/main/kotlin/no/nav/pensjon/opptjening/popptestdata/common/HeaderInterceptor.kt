@@ -1,8 +1,8 @@
-package no.nav.pensjon.opptjening.popptestdata.common.client
+package no.nav.pensjon.opptjening.popptestdata.common
 
 import jakarta.servlet.http.HttpServletRequest
-import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
-import no.nav.pensjon.opptjening.popptestdata.common.token.PoppTokenRouting
+import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.token.PoppTokenRouting
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpRequest
 import org.springframework.http.MediaType

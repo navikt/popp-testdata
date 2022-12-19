@@ -1,10 +1,10 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.common.client.HeaderInterceptor.Companion.ENVIRONMENT_HEADER
-import no.nav.pensjon.opptjening.popptestdata.common.client.HeaderInterceptor.Companion.NAV_CALL_ID
-import no.nav.pensjon.opptjening.popptestdata.common.client.HeaderInterceptor.Companion.NAV_CONSUMER_ID
-import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
-import no.nav.pensjon.opptjening.popptestdata.common.exceptionhandling.requestRequirement
+import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.ENVIRONMENT_HEADER
+import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CALL_ID
+import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID
+import no.nav.pensjon.opptjening.popptestdata.common.requestRequirement
+import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -26,8 +26,8 @@ class InntektController(private val inntektService: InntektService) {
         @RequestBody request: LagreInntektRequest,
     ): ResponseEntity<*> {
         requestRequirement(request.fomAar <= request.tomAar) { "FomAr is grater than tomAr in request. fomAar was ${request.fomAar} and tomAar was ${request.tomAar}" }
-        requestRequirement(request.fomAar >= 1968) { "FomAr is before 1968. fomAar was ${request.fomAar}"}
-        requestRequirement(request.tomAar <= LocalDate.now().year) { "TomAr is after current year ${LocalDate.now().year}. fomAar was ${request.tomAar}"}
+        requestRequirement(request.fomAar >= 1968) { "FomAr is before 1968. fomAar was ${request.fomAar}" }
+        requestRequirement(request.tomAar <= LocalDate.now().year) { "TomAr is after current year ${LocalDate.now().year}. fomAar was ${request.tomAar}" }
 
         inntektService.lagreInntekter(request, environment)
         return ResponseEntity.ok(HttpStatus.OK)

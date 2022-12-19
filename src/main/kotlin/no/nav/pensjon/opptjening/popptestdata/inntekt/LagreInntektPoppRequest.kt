@@ -1,6 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.common.model.ChangeStamp
+import no.nav.pensjon.opptjening.popptestdata.common.ChangeStamp
 
 internal const val DEFAULT_KILDE = "PEN"
 internal const val DEFAULT_KOMMUNE = "1337"
