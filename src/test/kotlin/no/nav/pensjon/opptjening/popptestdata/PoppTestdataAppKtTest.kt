@@ -9,8 +9,8 @@ import no.nav.pensjon.opptjening.popptestdata.common.client.HeaderInterceptor.Co
 import no.nav.pensjon.opptjening.popptestdata.common.client.HeaderInterceptor.Companion.NAV_CALL_ID
 import no.nav.pensjon.opptjening.popptestdata.common.client.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.common.environment.Environment
-import no.nav.pensjon.opptjening.popptestdata.inntekt.LagreInntektPoppRequest
-import no.nav.pensjon.opptjening.popptestdata.inntekt.LagreInntektRequest
+import no.nav.pensjon.opptjening.popptestdata.common.model.DEFAULT_CHANGED_BY
+import no.nav.pensjon.opptjening.popptestdata.inntekt.*
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
@@ -50,14 +50,14 @@ internal class PoppTestdataAppKtTest {
     fun `Given a valid lagreInntekt request when calling post inntekt then return 200 ok`() {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q1, inntektRequest())
+        performPostInntekt()
     }
 
     @Test
     fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1`() {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q1, inntektRequest())
+        performPostInntekt(environment = Q1)
 
         wiremock.verify(postRequestedFor(urlEqualToPoppQ1))
     }
@@ -66,7 +66,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2`() {
         wiremock.stubFor(post(urlEqualToPoppQ2).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q2, inntektRequest())
+        performPostInntekt(environment = Q2)
 
         wiremock.verify(postRequestedFor(urlEqualToPoppQ2))
     }
@@ -75,7 +75,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1 with Q1 token`() {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q1, inntektRequest())
+        performPostInntekt(environment = Q1)
 
         wiremock.verify(
             postRequestedFor(urlEqualToPoppQ1)
@@ -87,7 +87,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2 with Q2 token`() {
         wiremock.stubFor(post(urlEqualToPoppQ2).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q2, inntektRequest())
+        performPostInntekt(Q2)
 
         wiremock.verify(
             postRequestedFor(urlEqualToPoppQ2)
@@ -102,7 +102,7 @@ internal class PoppTestdataAppKtTest {
 
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q1, inntektRequest(fomAar = fomAar, tomAar = tomAar))
+        performPostInntekt(request = inntektRequest(fomAar = fomAar, tomAar = tomAar))
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
 
@@ -116,7 +116,7 @@ internal class PoppTestdataAppKtTest {
     }
 
     @Test
-    fun `Given post inntekt with environment Q1, fnr 09876543210 ,fomAar 2000, tomAar 2000, belop 20000L then call lagre inntekt in one time with inntekt that contains input`() {
+    fun `Given post inntekt with fnr 09876543210 ,fomAar 2000, tomAar 2000, belop 20000L then call lagre inntekt in one time with inntekt that contains input`() {
         val request = LagreInntektRequest(
             fnr = "09876543210",
             fomAar = 2000,
@@ -126,7 +126,7 @@ internal class PoppTestdataAppKtTest {
 
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q1, jacksonObjectMapper().writeValueAsString(request))
+        performPostInntekt(request = jacksonObjectMapper().writeValueAsString(request))
 
         wiremock.verify(1, postRequestedFor(urlEqualToPoppQ1))
         val poppRequest = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
@@ -140,11 +140,11 @@ internal class PoppTestdataAppKtTest {
         assertEquals(request.fomAar, poppRequest.inntekt.inntektAr)
 
         //Default values
-        assertEquals("PEN", poppRequest.inntekt.kilde)
-        assertEquals("1337", poppRequest.inntekt.kommune)
-        assertEquals("INN_LON", poppRequest.inntekt.inntektType)
-        assertEquals("POPPTESTDATA", poppRequest.inntekt.changeStamp.createdBy)
-        assertEquals("POPPTESTDATA", poppRequest.inntekt.changeStamp.updatedBy)
+        assertEquals(DEFAULT_KILDE, poppRequest.inntekt.kilde)
+        assertEquals(DEFAULT_KOMMUNE, poppRequest.inntekt.kommune)
+        assertEquals(DEFAULT_INNTEKT_TYPE, poppRequest.inntekt.inntektType)
+        assertEquals(DEFAULT_CHANGED_BY, poppRequest.inntekt.changeStamp.createdBy)
+        assertEquals(DEFAULT_CHANGED_BY, poppRequest.inntekt.changeStamp.updatedBy)
         assertNotNull(poppRequest.inntekt.changeStamp.createdDate)
         assertNotNull(poppRequest.inntekt.changeStamp.updatedDate)
     }
@@ -160,7 +160,10 @@ internal class PoppTestdataAppKtTest {
 
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        performPostInntekt(Q1, inntektRequest(fomAar = fomAar, tomAar = tomAar, belop = belop2003, redusertMedGrunnbelop = true))
+        performPostInntekt(
+            Q1,
+            inntektRequest(fomAar = fomAar, tomAar = tomAar, belop = belop2003, redusertMedGrunnbelop = true)
+        )
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
 
@@ -247,6 +250,19 @@ internal class PoppTestdataAppKtTest {
         """
     }
 
+    private fun performPostInntekt(environment: String = Q1, request: String = inntektRequest()) {
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(request)
+                .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header(ENVIRONMENT_HEADER, environment)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
+        )
+            .andExpect(status().isOk)
+    }
+
     private fun createToken(audience: String = ACCEPTED_AUDIENCE): String {
         return "Bearer ${
             server.issueToken(
@@ -257,20 +273,8 @@ internal class PoppTestdataAppKtTest {
         }"
     }
 
-    private fun performPostInntekt(env: String, request: String) {
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(request)
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header(ENVIRONMENT_HEADER, env)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-        )
-            .andExpect(status().isOk)
-    }
-
-    fun List<LagreInntektPoppRequest>.getInntekt(ar: Int) = this.map { it.inntekt }.firstOrNull { it.inntektAr == ar }
+    private fun List<LagreInntektPoppRequest>.getInntekt(ar: Int) =
+        this.map { it.inntekt }.firstOrNull { it.inntektAr == ar }
 
     companion object {
         private const val ACCEPTED_AUDIENCE = "testaud"

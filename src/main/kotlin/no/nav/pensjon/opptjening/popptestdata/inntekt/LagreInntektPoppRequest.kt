@@ -2,6 +2,10 @@ package no.nav.pensjon.opptjening.popptestdata.inntekt
 
 import no.nav.pensjon.opptjening.popptestdata.common.model.ChangeStamp
 
+internal const val DEFAULT_KILDE = "PEN"
+internal const val DEFAULT_KOMMUNE = "1337"
+internal const val DEFAULT_INNTEKT_TYPE = "INN_LON"
+
 data class LagreInntektPoppRequest(
     val inntekt: Inntekt
 )
@@ -11,7 +15,7 @@ data class Inntekt(
     val inntektAr: Int,
     val belop: Long,
     val changeStamp: ChangeStamp = ChangeStamp(),
-    val kilde: String = "PEN",
-    val kommune: String = "1337",
-    val inntektType: String = "INN_LON"
+    val kilde: String = DEFAULT_KILDE,
+    val kommune: String = DEFAULT_KOMMUNE,
+    val inntektType: String = DEFAULT_INNTEKT_TYPE
 )
