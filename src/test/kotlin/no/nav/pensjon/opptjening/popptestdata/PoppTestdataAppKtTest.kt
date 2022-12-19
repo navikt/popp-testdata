@@ -50,32 +50,14 @@ internal class PoppTestdataAppKtTest {
     fun `Given a valid lagreInntekt request when calling post inntekt then return 200 ok`() {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest())
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header(ENVIRONMENT_HEADER, Q1)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-        )
-            .andExpect(status().isOk)
+        performPostInntekt(Q1, inntektRequest())
     }
 
     @Test
     fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1`() {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest())
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header(ENVIRONMENT_HEADER, Q1)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-        )
-            .andExpect(status().isOk)
+        performPostInntekt(Q1, inntektRequest())
 
         wiremock.verify(postRequestedFor(urlEqualToPoppQ1))
     }
@@ -84,16 +66,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2`() {
         wiremock.stubFor(post(urlEqualToPoppQ2).willReturn(aResponse().withStatus(200)))
 
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest())
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header(ENVIRONMENT_HEADER, Q2)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-        )
-            .andExpect(status().isOk)
+        performPostInntekt(Q2, inntektRequest())
 
         wiremock.verify(postRequestedFor(urlEqualToPoppQ2))
     }
@@ -102,16 +75,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1 with Q1 token`() {
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest())
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header(ENVIRONMENT_HEADER, Q1)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-        )
-            .andExpect(status().isOk)
+        performPostInntekt(Q1, inntektRequest())
 
         wiremock.verify(
             postRequestedFor(urlEqualToPoppQ1)
@@ -123,16 +87,7 @@ internal class PoppTestdataAppKtTest {
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2 with Q2 token`() {
         wiremock.stubFor(post(urlEqualToPoppQ2).willReturn(aResponse().withStatus(200)))
 
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest())
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header(ENVIRONMENT_HEADER, Q2)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-        )
-            .andExpect(status().isOk)
+        performPostInntekt(Q2, inntektRequest())
 
         wiremock.verify(
             postRequestedFor(urlEqualToPoppQ2)
@@ -147,17 +102,7 @@ internal class PoppTestdataAppKtTest {
 
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest(fomAar = fomAar, tomAar = tomAar))
-                .header(ENVIRONMENT_HEADER, Q1)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-        )
-            .andExpect(status().isOk)
-
+        performPostInntekt(Q1, inntektRequest(fomAar = fomAar, tomAar = tomAar))
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
 
@@ -181,18 +126,7 @@ internal class PoppTestdataAppKtTest {
 
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(jacksonObjectMapper().writeValueAsString(request))
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-                .header(ENVIRONMENT_HEADER, Q1)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-        )
-            .andExpect(status().isOk)
-
-
+        performPostInntekt(Q1, jacksonObjectMapper().writeValueAsString(request))
 
         wiremock.verify(1, postRequestedFor(urlEqualToPoppQ1))
         val poppRequest = wiremock.findAll(postRequestedFor(urlEqualToPoppQ1))
@@ -222,17 +156,7 @@ internal class PoppTestdataAppKtTest {
 
         wiremock.stubFor(post(urlEqualToPoppQ1).willReturn(aResponse().withStatus(200)))
 
-        mockMvc.perform(
-            post("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .content(inntektRequest(fomAar = fomAar, tomAar = tomAar, redusertMedGrunnbelop = true))
-                .header(ENVIRONMENT_HEADER, Q1)
-                .header(NAV_CALL_ID, "test")
-                .header(NAV_CONSUMER_ID, "test")
-                .header(HttpHeaders.AUTHORIZATION, createToken())
-        )
-            .andExpect(status().isOk)
-
+        performPostInntekt(Q1, inntektRequest(fomAar = fomAar, tomAar = tomAar, redusertMedGrunnbelop = true))
 
         wiremock.verify((fomAar..tomAar).toList().size, postRequestedFor(urlEqualToPoppQ1))
 
@@ -322,6 +246,19 @@ internal class PoppTestdataAppKtTest {
                 tokenCallback = DefaultOAuth2TokenCallback(issuerId = "aad", audience = listOf(audience))
             ).serialize()
         }"
+    }
+
+    private fun performPostInntekt(env: String, request: String) {
+        mockMvc.perform(
+            post("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .content(request)
+                .header(HttpHeaders.AUTHORIZATION, createToken())
+                .header(ENVIRONMENT_HEADER, env)
+                .header(NAV_CALL_ID, "test")
+                .header(NAV_CONSUMER_ID, "test")
+        )
+            .andExpect(status().isOk)
     }
 
     companion object {
