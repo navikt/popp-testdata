@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Unprotected
-class HealthApi {
+class HealthController {
 
     @GetMapping("/ping")
     fun ping(): ResponseEntity<Unit> = ResponseEntity.ok().build()
