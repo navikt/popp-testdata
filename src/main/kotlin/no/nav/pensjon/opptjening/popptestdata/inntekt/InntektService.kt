@@ -17,20 +17,8 @@ class InntektService(private val poppInntektClient: PoppInntektClient) {
 
     private fun createPoppInntektRequests(request: LagreInntektRequest): List<LagreInntektPoppRequest> {
         return when (request.redusertMedGrunnbelop) {
-            false -> createRequestsWithConstantBelop(request)
             true -> createRequestsWithRedusertMedGrunnbelop(request)
-        }
-    }
-
-    private fun createRequestsWithConstantBelop(request: LagreInntektRequest): List<LagreInntektPoppRequest> {
-        return (request.fomAar..request.tomAar).map { inntektAr ->
-            LagreInntektPoppRequest(
-                Inntekt(
-                    inntektAr = inntektAr,
-                    fnr = request.fnr,
-                    belop = request.belop
-                )
-            )
+            false -> createRequestsWithConstantBelop(request)
         }
     }
 
@@ -47,4 +35,15 @@ class InntektService(private val poppInntektClient: PoppInntektClient) {
             )
         }
     }
+
+    private fun createRequestsWithConstantBelop(request: LagreInntektRequest) =
+        (request.fomAar..request.tomAar).map { inntektAr ->
+            LagreInntektPoppRequest(
+                Inntekt(
+                    inntektAr = inntektAr,
+                    fnr = request.fnr,
+                    belop = request.belop
+                )
+            )
+        }
 }
