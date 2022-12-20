@@ -13,9 +13,9 @@ spec:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-gcp
     - name: popp_url_q1
-      value: https://pensjon-popp-q1.nais.preprod.local/popp/api
+      value: https://pensjon-popp-q1.dev.intern.nav.no/popp/api
     - name: popp_url_q2
-      value: https://pensjon-popp-q2.nais.preprod.local/popp/api
+      value: https://pensjon-popp-q2.dev.intern.nav.no/popp/api
     - name: POPP_Q1_API_ID
       value: dev-fss.pensjonopptjening.pensjon-popp-q1
     - name: POPP_Q2_API_ID
