@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service
 @Service
 class InntektService(private val poppInntektClient: PoppInntektClient) {
 
+    fun hentInntekt(fnr: String, fomAr: Int, environment: Environment): List<Inntekt> {
+        return emptyList()
+    }
+
     fun lagreInntekter(request: LagreInntektRequest, environment: Environment) {
         val poppInntektRequests = createPoppInntektRequests(request)
 
@@ -27,7 +31,7 @@ class InntektService(private val poppInntektClient: PoppInntektClient) {
 
         return (request.fomAar..request.tomAar).map { inntektAr ->
             LagreInntektPoppRequest(
-                Inntekt(
+                InntektPopp(
                     inntektAr = inntektAr,
                     fnr = request.fnr,
                     belop = (amountOfGrunnbelop * Grunnbelop.getG(inntektAr)).toLong()
@@ -39,7 +43,7 @@ class InntektService(private val poppInntektClient: PoppInntektClient) {
     private fun createRequestsWithConstantBelop(request: LagreInntektRequest) =
         (request.fomAar..request.tomAar).map { inntektAr ->
             LagreInntektPoppRequest(
-                Inntekt(
+                InntektPopp(
                     inntektAr = inntektAr,
                     fnr = request.fnr,
                     belop = request.belop

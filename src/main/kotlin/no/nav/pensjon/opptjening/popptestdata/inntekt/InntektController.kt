@@ -9,10 +9,7 @@ import no.nav.security.token.support.core.api.Protected
 import no.nav.security.token.support.core.api.Unprotected
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 
 
@@ -20,6 +17,10 @@ import java.time.LocalDate
 @Unprotected
 @RestController
 class InntektController(private val inntektService: InntektService) {
+
+    companion object{
+        private const val FIRST_FOM_YEAR = 1968
+    }
     @PostMapping("/inntekt")
     fun lagreInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
@@ -28,11 +29,21 @@ class InntektController(private val inntektService: InntektService) {
         @RequestBody request: LagreInntektRequest,
     ): ResponseEntity<*> {
         requestRequirement(request.fomAar <= request.tomAar) { "FomAr is grater than tomAr in request. fomAar was ${request.fomAar} and tomAar was ${request.tomAar}" }
-        requestRequirement(request.fomAar >= 1968) { "FomAr is before 1968. fomAar was ${request.fomAar}" }
+        requestRequirement(request.fomAar >= FIRST_FOM_YEAR) { "FomAr is before $FIRST_FOM_YEAR. fomAar was ${request.fomAar}" }
         requestRequirement(request.tomAar <= LocalDate.now().year) { "TomAr is after current year ${LocalDate.now().year}. fomAar was ${request.tomAar}" }
 
         inntektService.lagreInntekter(request, environment)
         return ResponseEntity.ok(HttpStatus.OK)
+    }
+
+    @GetMapping("/inntekt")
+    fun hentInntekter(
+        @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
+        @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
+        @RequestHeader(value = ENVIRONMENT_HEADER, required = true) environment: Environment,
+        @RequestHeader(value = "fnr", required = true) fnr: String
+    ): List<Inntekt> {
+        return inntektService.hentInntekt(fnr = fnr, fomAr = FIRST_FOM_YEAR, environment)
     }
 }
 //https://pensjon-regler-q1.dev.adeo.no/api/hentVeietGrunnbelopListe?fomAr=1950&tomAr=2050

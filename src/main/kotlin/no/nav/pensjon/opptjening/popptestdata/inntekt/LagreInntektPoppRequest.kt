@@ -7,10 +7,10 @@ internal const val DEFAULT_KOMMUNE = "1337"
 internal const val DEFAULT_INNTEKT_TYPE = "INN_LON"
 
 data class LagreInntektPoppRequest(
-    val inntekt: Inntekt
+    val inntekt: InntektPopp
 )
 
-data class Inntekt(
+data class InntektPopp(
     val fnr: String,
     val inntektAr: Int,
     val belop: Long,
