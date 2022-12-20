@@ -143,7 +143,7 @@ class HentInntektTest {
     }
 
     @Test
-    fun `Given unauthorized audience on token when calling post inntekt then return 401 Bad Request`() {
+    fun `Given unauthorized audience on token when calling post inntekt then return 401 Unauthorized`() {
         performGetInntekt(token = createToken(audience = "tull")).andExpect(MockMvcResultMatchers.status().`is`(401))
     }
 
