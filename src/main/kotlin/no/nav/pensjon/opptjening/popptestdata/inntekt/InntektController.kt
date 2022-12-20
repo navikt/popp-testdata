@@ -6,6 +6,7 @@ import no.nav.pensjon.opptjening.popptestdata.common.requestRequirement
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.ENVIRONMENT_HEADER
 import no.nav.security.token.support.core.api.Protected
+import no.nav.security.token.support.core.api.Unprotected
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 
 
-@Protected
+//@Protected
+@Unprotected
 @RestController
 class InntektController(private val inntektService: InntektService) {
     @PostMapping("/inntekt")
