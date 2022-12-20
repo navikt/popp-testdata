@@ -19,7 +19,6 @@ import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -36,7 +35,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @SpringBootTest(classes = [PoppTestdataApp::class])
 @AutoConfigureMockMvc
 @EnableMockOAuth2Server
-internal class InntektControllerTest {
+internal class LagreInntektTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -208,49 +207,6 @@ internal class InntektControllerTest {
         performPostInntekt(navConsumerId = null).andExpect(status().isBadRequest)
     }
 
-    @Test
-    fun `Given sumPi returns 200 with no body when calling get inntekt then return 200 ok with empty list`() {
-        wiremock.stubFor(post(urlSumPiQ1).willReturn(aResponse().withStatus(200)))
-
-        performGetInntekt().andExpect(status().isOk)
-    }
-
-    @Test
-    fun `Given sumPi returns 201 with no body when calling get inntekt then return 200 ok with empty list`() {
-        wiremock.stubFor(post(urlSumPiQ1).willReturn(aResponse().withStatus(201)))
-
-        performGetInntekt().andExpect(status().isOk)
-    }
-
-    @Test
-    fun `Given sumPi returns 200 with two inntekts when calling get inntekt then return 200 ok with two inntekts`() {
-        wiremock.stubFor(post(urlSumPiQ1).willReturn(aResponse().withStatus(200).withBody(
-            """
-                {
-                  "inntekter": [
-                    {
-                      "inntektAr": 2000,
-                      "belop": 100000,
-                      "inntektType": "SUM_PI"
-                    },
-                    {
-                      "inntektAr": 2001,
-                      "belop": 200000,
-                      "inntektType": "SUM_PI"
-                    }
-                  ]
-                }
-            """.trimIndent()
-        ).withHeader("content-type", "application/json")))
-
-        val response = performGetInntekt().andExpect(status().isOk).andReturn().response.contentAsString
-        val inntekter = jacksonObjectMapper().readValue(response, object : TypeReference<List<Inntekt>>() {})
-        assertEquals(2000, inntekter[0].inntektAar)
-        assertEquals(100000, inntekter[0].belop)
-        assertEquals(2001, inntekter[1].inntektAar)
-        assertEquals(200000, inntekter[1].belop)
-    }
-
     private fun inntektRequest(
         fnr: String? = "01234567890",
         fomAar: Int? = 2000,
@@ -285,25 +241,6 @@ internal class InntektControllerTest {
                     environment?.let { header(ENVIRONMENT_HEADER, environment) }
                     navCallId?.let { header(NAV_CALL_ID, navCallId) }
                     navConsumerId?.let { header(NAV_CONSUMER_ID, navConsumerId) }
-                }
-        )
-
-    private fun performGetInntekt(
-        fnr: String? = "12345678901",
-        token: String = createToken(),
-        environment: String? = Q1,
-        navCallId: String? = "test",
-        navConsumerId : String? = "test"
-    ) =
-        mockMvc.perform(
-            get("/inntekt")
-                .contentType(APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, token)
-                .apply {
-                    environment?.let { header(ENVIRONMENT_HEADER, environment) }
-                    navCallId?.let { header(NAV_CALL_ID, navCallId) }
-                    navConsumerId?.let { header(NAV_CONSUMER_ID, navConsumerId) }
-                    fnr?.let { header("fnr", fnr)}
                 }
         )
 
