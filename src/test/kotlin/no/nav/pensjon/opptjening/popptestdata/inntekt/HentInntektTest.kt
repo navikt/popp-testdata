@@ -14,7 +14,6 @@ import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -121,6 +120,26 @@ class HentInntektTest {
             WireMock.postRequestedFor(urlSumPiQ2)
                 .withHeader("Authorization", WireMock.equalTo("Bearer ${MockPoppTokenProviderConfig.POPP_Q2_TOKEN}"))
         )
+    }
+
+    @Test
+    fun `Given empty environment header when calling post inntekt then return 400 Bad Request`() {
+        performGetInntekt(environment = null).andExpect(MockMvcResultMatchers.status().`is`(400))
+    }
+
+    @Test
+    fun `Given empty navCallId header when calling post inntekt then return 400 Bad Request`() {
+        performGetInntekt(navCallId = null).andExpect(MockMvcResultMatchers.status().`is`(400))
+    }
+
+    @Test
+    fun `Given empty navConsumerId header when calling post inntekt then return 400 Bad Request`() {
+        performGetInntekt(navConsumerId = null).andExpect(MockMvcResultMatchers.status().`is`(400))
+    }
+
+    @Test
+    fun `Given empty fnr header when calling post inntekt then return 400 Bad Request`() {
+        performGetInntekt(fnr = null).andExpect(MockMvcResultMatchers.status().`is`(400))
     }
 
     fun ResultActions.hentInntektResponse() = jacksonObjectMapper().readValue(
