@@ -183,7 +183,6 @@ internal class InntektControllerTest {
         assertEquals(belop2000, poppRequests.getInntekt(fomAar)!!.belop)
     }
 
-    @Disabled
     @Test
     fun `Given an unauthorized audience when calling post inntekt then return 401`() {
         performPostInntekt(token = createToken(audience = "unauthorizedAudience")).andExpect(status().isUnauthorized)

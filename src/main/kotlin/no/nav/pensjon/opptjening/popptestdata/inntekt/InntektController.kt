@@ -7,21 +7,21 @@ import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektRequest
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.ENVIRONMENT_HEADER
-import no.nav.security.token.support.core.api.Unprotected
+import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 
 
-//@Protected
-@Unprotected
+@Protected
 @RestController
 class InntektController(private val inntektService: InntektService) {
 
-    companion object{
+    companion object {
         const val FIRST_FOM_YEAR = 1968
     }
+
     @PostMapping("/inntekt")
     fun lagreInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
