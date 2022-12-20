@@ -262,7 +262,6 @@ internal class LagreInntektTest {
 
         private val urlEqualToPoppQ1 = urlEqualTo("/q1/inntekt")
         private val urlEqualToPoppQ2 = urlEqualTo("/q2/inntekt")
-        private val urlSumPiQ1 = urlEqualTo("/q1/inntekt/sumPi")
 
         private val Q1 = Environment.Q1.name
         private val Q2 = Environment.Q2.name
@@ -272,6 +271,7 @@ internal class LagreInntektTest {
         @JvmStatic
         @AfterAll
         fun clean() {
+            wiremock.stop()
             wiremock.shutdown()
         }
     }

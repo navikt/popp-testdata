@@ -130,6 +130,7 @@ class HentInntektTest {
         @JvmStatic
         @AfterAll
         fun clean() {
+            wiremock.stop()
             wiremock.shutdown()
         }
     }
