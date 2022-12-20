@@ -2,17 +2,16 @@ package no.nav.pensjon.opptjening.popptestdata.inntekt
 
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.grunnbelop.Grunnbelop
-import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
-import no.nav.pensjon.opptjening.popptestdata.inntekt.model.InntektPopp
-import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektPoppRequest
-import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektRequest
+import no.nav.pensjon.opptjening.popptestdata.inntekt.model.*
 import org.springframework.stereotype.Service
 
 @Service
 class InntektService(private val poppInntektClient: PoppInntektClient) {
 
     fun hentInntekt(fnr: String, fomAr: Int, environment: Environment): List<Inntekt> {
-        return emptyList()
+        val sumPiResponse = poppInntektClient.hentSumPi(HentSumPiRequest(fnr = fnr, fomAr = fomAr), environment)
+
+        return sumPiResponse?.inntekter?.map { Inntekt(inntektAar = it.inntektAr, belop = it.belop) } ?: listOf()
     }
 
     fun lagreInntekter(request: LagreInntektRequest, environment: Environment) {
