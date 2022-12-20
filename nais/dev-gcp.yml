@@ -9,6 +9,11 @@ spec:
   azure:
     application:
       enabled: true
+  accessPolicy:
+    outbound:
+      external:
+        - host: pensjon-popp-q1.dev.intern.nav.no
+        - host: pensjon-popp-q2.dev.intern.nav.no
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-gcp
