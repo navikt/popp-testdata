@@ -142,6 +142,11 @@ class HentInntektTest {
         performGetInntekt(fnr = null).andExpect(MockMvcResultMatchers.status().`is`(400))
     }
 
+    @Test
+    fun `Given unauthorized audience on token when calling post inntekt then return 401 Bad Request`() {
+        performGetInntekt(token = createToken(audience = "tull")).andExpect(MockMvcResultMatchers.status().`is`(401))
+    }
+
     fun ResultActions.hentInntektResponse() = jacksonObjectMapper().readValue(
         this.andReturn().response.contentAsString,
         object : TypeReference<List<Inntekt>>() {}
