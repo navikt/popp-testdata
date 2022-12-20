@@ -208,17 +208,7 @@ internal class InntektControllerTest {
         performPostInntekt(navConsumerId = null).andExpect(status().isBadRequest).andExpect(status().isBadRequest)
     }
 
-    @Test
-    fun `when calling get environment then return environment`() {
-        val result = mockMvc.perform(MockMvcRequestBuilders.get("/environment"))
-            .andExpect(status().isOk)
-            .andReturn()
 
-        val body = result.response.contentAsString
-        Environment.values().forEach {
-            assertTrue(body.contains(it.name), "Response did not contain environment ${it.name}")
-        }
-    }
 
     private fun inntektRequest(
         fnr: String? = "01234567890",
