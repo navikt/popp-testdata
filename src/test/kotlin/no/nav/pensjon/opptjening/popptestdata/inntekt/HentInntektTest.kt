@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor
+import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor
@@ -86,10 +87,40 @@ class HentInntektTest {
         )
 
         val inntektList = performGetInntekt().andExpect(MockMvcResultMatchers.status().isOk).hentInntektResponse()
-        Assertions.assertEquals(2000, inntektList[0].inntektAar)
-        Assertions.assertEquals(100000, inntektList[0].belop)
-        Assertions.assertEquals(2001, inntektList[1].inntektAar)
-        Assertions.assertEquals(200000, inntektList[1].belop)
+        assertEquals(2000, inntektList[0].inntektAar)
+        assertEquals(100000, inntektList[0].belop)
+        assertEquals(2001, inntektList[1].inntektAar)
+        assertEquals(200000, inntektList[1].belop)
+    }
+
+    @Test
+    fun `Given env Q1 when calling post inntekt then call lagre inntekt in popp Q1`() {
+        wiremock.stubFor(WireMock.post(urlSumPiQ1).willReturn(WireMock.aResponse().withStatus(200)))
+
+        val inntektList = performGetInntekt()
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .hentInntektResponse()
+
+        assertEquals(0, inntektList.size)
+        wiremock.verify(
+            WireMock.postRequestedFor(urlSumPiQ1)
+                .withHeader("Authorization", WireMock.equalTo("Bearer ${MockPoppTokenProviderConfig.POPP_Q1_TOKEN}"))
+        )
+    }
+
+    @Test
+    fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2`() {
+        wiremock.stubFor(WireMock.post(urlSumPiQ2).willReturn(WireMock.aResponse().withStatus(200)))
+
+        val inntektList = performGetInntekt(environment = Q2)
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .hentInntektResponse()
+
+        assertEquals(0, inntektList.size)
+        wiremock.verify(
+            WireMock.postRequestedFor(urlSumPiQ2)
+                .withHeader("Authorization", WireMock.equalTo("Bearer ${MockPoppTokenProviderConfig.POPP_Q2_TOKEN}"))
+        )
     }
 
     fun ResultActions.hentInntektResponse() = jacksonObjectMapper().readValue(
