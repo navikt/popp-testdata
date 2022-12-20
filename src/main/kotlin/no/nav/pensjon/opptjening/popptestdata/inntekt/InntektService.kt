@@ -2,6 +2,10 @@ package no.nav.pensjon.opptjening.popptestdata.inntekt
 
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.grunnbelop.Grunnbelop
+import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
+import no.nav.pensjon.opptjening.popptestdata.inntekt.model.InntektPopp
+import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektPoppRequest
+import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektRequest
 import org.springframework.stereotype.Service
 
 @Service

@@ -2,6 +2,7 @@ package no.nav.pensjon.opptjening.popptestdata.inntekt
 
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.environment.PoppUrlRouting
+import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektPoppRequest
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 

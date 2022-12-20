@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.inntekt
+package no.nav.pensjon.opptjening.popptestdata.inntekt.model
 
 
 data class LagreInntektRequest(
