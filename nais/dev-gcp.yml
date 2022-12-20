@@ -14,6 +14,20 @@ spec:
       external:
         - host: https://pensjon-popp.dev-fss-pub.nais.io
         - host: https://pensjon-popp-q2.dev-fss-pub.nais.io
+    inbound:
+      rules:
+        - application: dolly-backend-dev
+          namespace: dolly
+          cluster: dev-gcp
+        - application: dolly-backend
+          namespace: dolly
+          cluster: dev-gcp
+        - application: dolly-frontend-dev
+          namespace: dolly
+          cluster: dev-gcp
+        - application: dolly-frontend
+          namespace: dolly
+          cluster: dev-gcp
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-gcp
