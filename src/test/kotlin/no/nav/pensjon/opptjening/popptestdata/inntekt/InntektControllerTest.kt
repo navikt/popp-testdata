@@ -1,15 +1,15 @@
-package no.nav.pensjon.opptjening.popptestdata
+package no.nav.pensjon.opptjening.popptestdata.inntekt
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import no.nav.pensjon.opptjening.popptestdata.MockPoppTokenProviderConfig.Companion.POPP_Q1_TOKEN
-import no.nav.pensjon.opptjening.popptestdata.MockPoppTokenProviderConfig.Companion.POPP_Q2_TOKEN
+import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
+import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig.Companion.POPP_Q1_TOKEN
+import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig.Companion.POPP_Q2_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.common.DEFAULT_CHANGED_BY
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CALL_ID
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
-import no.nav.pensjon.opptjening.popptestdata.inntekt.*
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.ENVIRONMENT_HEADER
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
@@ -33,7 +33,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @SpringBootTest(classes = [PoppTestdataApp::class])
 @AutoConfigureMockMvc
 @EnableMockOAuth2Server
-internal class PoppTestdataAppKtTest {
+internal class InntektControllerTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc

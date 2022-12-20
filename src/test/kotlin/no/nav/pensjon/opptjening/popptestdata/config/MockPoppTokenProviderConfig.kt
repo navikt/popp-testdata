@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata
+package no.nav.pensjon.opptjening.popptestdata.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
