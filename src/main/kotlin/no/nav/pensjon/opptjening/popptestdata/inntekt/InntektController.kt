@@ -20,7 +20,7 @@ import java.time.LocalDate
 class InntektController(private val inntektService: InntektService) {
 
     companion object{
-        private const val FIRST_FOM_YEAR = 1968
+        const val FIRST_FOM_YEAR = 1968
     }
     @PostMapping("/inntekt")
     fun lagreInntekter(
@@ -47,4 +47,3 @@ class InntektController(private val inntektService: InntektService) {
         return inntektService.hentInntekt(fnr = fnr, fomAr = FIRST_FOM_YEAR, environment)
     }
 }
-//https://pensjon-regler-q1.dev.adeo.no/api/hentVeietGrunnbelopListe?fomAr=1950&tomAr=2050

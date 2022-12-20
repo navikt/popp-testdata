@@ -1,5 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
@@ -27,7 +28,7 @@ import org.springframework.cloud.contract.wiremock.WireMockSpring
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -195,20 +196,61 @@ internal class InntektControllerTest {
 
     @Test
     fun `Given empty environment header when calling post inntekt then return 400 Bad Request`() {
-        performPostInntekt(environment = null).andExpect(status().isBadRequest).andExpect(status().isBadRequest)
+        performPostInntekt(environment = null).andExpect(status().isBadRequest)
     }
 
     @Test
     fun `Given empty navCallId header when calling post inntekt then return 400 Bad Request`() {
-        performPostInntekt(navCallId = null).andExpect(status().isBadRequest).andExpect(status().isBadRequest)
+        performPostInntekt(navCallId = null).andExpect(status().isBadRequest)
     }
 
     @Test
     fun `Given empty navConsumerId header when calling post inntekt then return 400 Bad Request`() {
-        performPostInntekt(navConsumerId = null).andExpect(status().isBadRequest).andExpect(status().isBadRequest)
+        performPostInntekt(navConsumerId = null).andExpect(status().isBadRequest)
     }
 
+    @Test
+    fun `Given sumPi returns 200 with no body when calling get inntekt then return 200 ok with empty list`() {
+        wiremock.stubFor(post(urlSumPiQ1).willReturn(aResponse().withStatus(200)))
 
+        performGetInntekt().andExpect(status().isOk)
+    }
+
+    @Test
+    fun `Given sumPi returns 201 with no body when calling get inntekt then return 200 ok with empty list`() {
+        wiremock.stubFor(post(urlSumPiQ1).willReturn(aResponse().withStatus(201)))
+
+        performGetInntekt().andExpect(status().isOk)
+    }
+
+    @Test
+    fun `Given sumPi returns 200 with two inntekts when calling get inntekt then return 200 ok with two inntekts`() {
+        wiremock.stubFor(post(urlSumPiQ1).willReturn(aResponse().withStatus(200).withBody(
+            """
+                {
+                  "inntekter": [
+                    {
+                      "inntektAr": 2000,
+                      "belop": 100000,
+                      "inntektType": "SUM_PI"
+                    },
+                    {
+                      "inntektAr": 2001,
+                      "belop": 200000,
+                      "inntektType": "SUM_PI"
+                    }
+                  ]
+                }
+            """.trimIndent()
+        ).withHeader("content-type", "application/json")))
+
+        val response = performGetInntekt().andExpect(status().isOk).andReturn().response.contentAsString
+        val inntekter = jacksonObjectMapper().readValue(response, object : TypeReference<List<Inntekt>>() {})
+        assertEquals(2000, inntekter[0].inntektAar)
+        assertEquals(100000, inntekter[0].belop)
+        assertEquals(2001, inntekter[1].inntektAar)
+        assertEquals(200000, inntekter[1].belop)
+    }
 
     private fun inntektRequest(
         fnr: String? = "01234567890",
@@ -247,6 +289,25 @@ internal class InntektControllerTest {
                 }
         )
 
+    private fun performGetInntekt(
+        fnr: String? = "12345678901",
+        token: String = createToken(),
+        environment: String? = Q1,
+        navCallId: String? = "test",
+        navConsumerId : String? = "test"
+    ) =
+        mockMvc.perform(
+            get("/inntekt")
+                .contentType(APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, token)
+                .apply {
+                    environment?.let { header(ENVIRONMENT_HEADER, environment) }
+                    navCallId?.let { header(NAV_CALL_ID, navCallId) }
+                    navConsumerId?.let { header(NAV_CONSUMER_ID, navConsumerId) }
+                    fnr?.let { header("fnr", fnr)}
+                }
+        )
+
     private fun createToken(audience: String = ACCEPTED_AUDIENCE): String {
         return "Bearer ${
             server.issueToken(
@@ -265,6 +326,7 @@ internal class InntektControllerTest {
 
         private val urlEqualToPoppQ1 = urlEqualTo("/q1/inntekt")
         private val urlEqualToPoppQ2 = urlEqualTo("/q2/inntekt")
+        private val urlSumPiQ1 = urlEqualTo("/q1/inntekt/sumPi")
 
         private val Q1 = Environment.Q1.name
         private val Q2 = Environment.Q2.name
