@@ -3,7 +3,6 @@ no.nav.security.jwt:
     discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
     accepted_audience:
       - ${AZURE_APP_CLIENT_ID}
-      - "99862a5d-72f4-4286-8e58-458a9ff1f964"
 
 management:
   endpoints:
