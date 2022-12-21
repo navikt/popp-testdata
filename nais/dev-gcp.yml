@@ -31,6 +31,9 @@ spec:
         - application: team-dolly-lokal-app
           namespace: dolly
           cluster: dev-fss
+        - application: testnav-popp-testdata-proxy-trygdeetaten
+          namespace: dolly
+          cluster: dev-gcp
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-gcp
