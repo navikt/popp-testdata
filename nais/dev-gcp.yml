@@ -29,7 +29,7 @@ spec:
         - application: dolly-frontend
           namespace: dolly
           cluster: dev-gcp
-        - application: dev-fss.dolly.team-dolly-lokal-app
+        - application: team-dolly-lokal-app
           namespace: dolly
           cluster: dev-fss
   env:
