@@ -16,21 +16,6 @@ spec:
         - host: https://pensjon-popp-q2.dev-fss-pub.nais.io
     inbound:
       rules:
-        - application: dolly-backend-dev
-          namespace: dolly
-          cluster: dev-gcp
-        - application: dolly-backend
-          namespace: dolly
-          cluster: dev-gcp
-        - application: dolly-frontend-dev
-          namespace: dolly
-          cluster: dev-gcp
-        - application: dolly-frontend
-          namespace: dolly
-          cluster: dev-gcp
-        - application: team-dolly-lokal-app
-          namespace: dolly
-          cluster: dev-fss
         - application: testnav-popp-testdata-proxy-trygdeetaten
           namespace: dolly
           cluster: dev-gcp
@@ -65,8 +50,8 @@ spec:
     cpuThresholdPercentage: 75
   resources:
     limits:
-      cpu: "4"
-      memory: 8096Mi
+      cpu: "2"
+      memory: 4096Mi
     requests:
-      cpu: 400m
-      memory: 4024Mi
+      cpu: 100m
+      memory: 1024Mi
