@@ -26,7 +26,7 @@ class InntektController(private val inntektService: InntektService) {
     }
 
     @Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
-    @PostMapping(INNTEKT_PATH)
+    @PostMapping("/api/v1/inntekt")
     fun lagreInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
@@ -42,7 +42,7 @@ class InntektController(private val inntektService: InntektService) {
     }
 
     @Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
-    @GetMapping(INNTEKT_PATH)
+    @GetMapping("/api/v1/inntekt")
     fun hentInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
