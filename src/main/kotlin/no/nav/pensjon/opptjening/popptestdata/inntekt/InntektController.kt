@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 
-@Protected
 @RestController
 @RequestMapping(INNTEKT_PATH)
 class InntektController(private val inntektService: InntektService) {
@@ -28,6 +27,7 @@ class InntektController(private val inntektService: InntektService) {
 
     @Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
     @PostMapping
+    @Protected
     fun lagreInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
@@ -44,6 +44,7 @@ class InntektController(private val inntektService: InntektService) {
 
     @Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
     @GetMapping
+    @Protected
     fun hentInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
