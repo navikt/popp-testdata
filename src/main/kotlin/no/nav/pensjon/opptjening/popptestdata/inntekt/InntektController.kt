@@ -1,5 +1,7 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CALL_ID
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.common.requestRequirement
@@ -24,6 +26,7 @@ class InntektController(private val inntektService: InntektService) {
         const val INNTEKT_PATH = "/api/v1/inntekt"
     }
 
+    @Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
     @PostMapping
     fun lagreInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
@@ -39,6 +42,7 @@ class InntektController(private val inntektService: InntektService) {
         return ResponseEntity.ok(HttpStatus.OK)
     }
 
+    @Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
     @GetMapping
     fun hentInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
