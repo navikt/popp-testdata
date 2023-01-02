@@ -19,6 +19,9 @@ spec:
         - application: testnav-popp-testdata-proxy-trygdeetaten
           namespace: dolly
           cluster: dev-gcp
+        - application: testnav-pensjon-testdata-facade-proxy
+          namespace: dolly
+          cluster: dev-fss
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-gcp
