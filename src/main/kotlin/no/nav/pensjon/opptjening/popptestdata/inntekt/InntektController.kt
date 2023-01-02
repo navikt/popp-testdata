@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 
 @RestController
-@RequestMapping(INNTEKT_PATH)
+@Protected
 class InntektController(private val inntektService: InntektService) {
 
     companion object {
@@ -26,8 +26,7 @@ class InntektController(private val inntektService: InntektService) {
     }
 
     @Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
-    @PostMapping
-    @Protected
+    @PostMapping(INNTEKT_PATH)
     fun lagreInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
@@ -43,8 +42,7 @@ class InntektController(private val inntektService: InntektService) {
     }
 
     @Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
-    @GetMapping
-    @Protected
+    @GetMapping(INNTEKT_PATH)
     fun hentInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
