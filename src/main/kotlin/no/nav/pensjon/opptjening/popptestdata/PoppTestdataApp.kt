@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-@EnableJwtTokenValidation(ignore = ["org.springdoc"])
+//@EnableJwtTokenValidation(ignore = ["org.springdoc"])
+@EnableJwtTokenValidation
 class PoppTestdataApp
 
 fun main(args: Array<String>) {

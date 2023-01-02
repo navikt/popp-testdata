@@ -49,7 +49,7 @@ dependencies {
     implementation("no.nav.pensjonopptjening:pensjon-opptjening-azure-ad-client:$azureAdClientVersion")
 
     //Documentation
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+    //implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
     // Test - setup
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
