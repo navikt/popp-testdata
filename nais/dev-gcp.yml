@@ -19,7 +19,7 @@ spec:
         - application: testnav-popp-testdata-proxy-trygdeetaten
           namespace: dolly
           cluster: dev-gcp
-        - application: testnav-pensjon-testdata-facade-proxy
+        - application: testnav-pensjon-testdata-facade-proxy-trygdeetaten
           namespace: dolly
           cluster: dev-fss
   env:
