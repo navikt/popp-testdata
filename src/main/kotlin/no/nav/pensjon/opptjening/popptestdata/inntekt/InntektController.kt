@@ -4,6 +4,7 @@ import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.common.requestRequirement
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.inntekt.InntektController.Companion.INNTEKT_PATH
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektRequest
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.ENVIRONMENT_HEADER
@@ -13,16 +14,17 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 
-
 @Protected
 @RestController
+@RequestMapping(INNTEKT_PATH)
 class InntektController(private val inntektService: InntektService) {
 
     companion object {
         const val FIRST_FOM_YEAR = 1968
+        const val INNTEKT_PATH = "/api/v1/inntekt"
     }
 
-    @PostMapping("/inntekt")
+    @PostMapping
     fun lagreInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
@@ -37,7 +39,7 @@ class InntektController(private val inntektService: InntektService) {
         return ResponseEntity.ok(HttpStatus.OK)
     }
 
-    @GetMapping("/inntekt")
+    @GetMapping
     fun hentInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,

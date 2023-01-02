@@ -8,6 +8,7 @@ import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.inntekt.InntektController.Companion.INNTEKT_PATH
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor
 import no.nav.security.mock.oauth2.MockOAuth2Server
@@ -27,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 
 @SpringBootTest(classes = [PoppTestdataApp::class])
 @AutoConfigureMockMvc
@@ -75,8 +77,7 @@ class HentInntektTest {
                     },
                     {
                       "inntektAr": 2001,
-                      "belop": 200000,
-                      "inntektType": "SUM_PI"
+                      "belop": 200000
                     }
                   ]
                 }
@@ -124,7 +125,7 @@ class HentInntektTest {
 
     @Test
     fun `Given empty environment header when calling post inntekt then return 400 Bad Request`() {
-        performGetInntekt(environment = null).andExpect(MockMvcResultMatchers.status().`is`(400))
+        performGetInntekt(environment = null).andExpect(MockMvcResultMatchers.status().`is`(400)).andExpect(content().string(""))
     }
 
     @Test
@@ -160,7 +161,7 @@ class HentInntektTest {
         navConsumerId: String? = "test"
     ) =
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/inntekt")
+            MockMvcRequestBuilders.get(INNTEKT_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .apply {
@@ -199,5 +200,4 @@ class HentInntektTest {
             wiremock.shutdown()
         }
     }
-
 }
