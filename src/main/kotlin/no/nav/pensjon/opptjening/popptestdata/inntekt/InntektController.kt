@@ -23,7 +23,6 @@ class InntektController(private val inntektService: InntektService) {
         const val INNTEKT_PATH = "/api/v1/inntekt"
     }
 
-    //@Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
     @PostMapping("/api/v1/inntekt")
     fun lagreInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
@@ -39,7 +38,6 @@ class InntektController(private val inntektService: InntektService) {
         return ResponseEntity.ok(HttpStatus.OK)
     }
 
-    //@Operation(security = [SecurityRequirement(name = "doc-bearer-token")])
     @GetMapping("/api/v1/inntekt")
     fun hentInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
@@ -50,3 +48,6 @@ class InntektController(private val inntektService: InntektService) {
         return inntektService.hentInntekt(fnr = fnr, fomAr = FIRST_FOM_YEAR, miljo)
     }
 }
+
+//TODO Request mapping
+//Miljø i egen mappe

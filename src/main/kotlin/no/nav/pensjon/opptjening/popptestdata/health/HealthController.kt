@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 @Unprotected
 class HealthController {
 
-    @GetMapping("/environment")
+    @GetMapping("/api/v1/environment")
     fun availableEnvironments(): ResponseEntity<List<Miljo>> = ResponseEntity.ok(Miljo.values().toList())
 
     @GetMapping("/ping")
