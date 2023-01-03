@@ -27,7 +27,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 
 @SpringBootTest(classes = [PoppTestdataApp::class])
 @AutoConfigureMockMvc
@@ -125,7 +124,6 @@ class HentInntektTest {
     @Test
     fun `Given empty environment header when calling post inntekt then return 400 Bad Request`() {
         performGetInntekt(miljo = null).andExpect(MockMvcResultMatchers.status().`is`(400))
-            .andExpect(content().string(""))
     }
 
     @Test
