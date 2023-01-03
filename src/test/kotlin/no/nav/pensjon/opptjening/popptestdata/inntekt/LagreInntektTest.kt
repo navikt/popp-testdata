@@ -4,19 +4,19 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
-import no.nav.pensjon.opptjening.popptestdata.common.DEFAULT_CHANGED_BY
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CALL_ID
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig.Companion.POPP_Q1_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig.Companion.POPP_Q2_TOKEN
-import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.*
+import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.MILJO
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -228,7 +228,7 @@ internal class LagreInntektTest {
         token: String = createToken(),
         environment: String? = Q1,
         navCallId: String? = "test",
-        navConsumerId : String? = "test"
+        navConsumerId: String? = "test"
     ) =
         mockMvc.perform(
             post("/api/v1/inntekt")

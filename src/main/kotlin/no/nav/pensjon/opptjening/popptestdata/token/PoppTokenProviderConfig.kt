@@ -23,7 +23,8 @@ class PoppTokenProviderConfig {
         azureAppClientId = azureAppClientId,
         azureAppClientSecret = azureAppClientSecret,
         targetApiId = pgiEndringApiId,
-        wellKnownUrl = wellKnownUrl)
+        wellKnownUrl = wellKnownUrl
+    )
 
     @Bean("poppAzureAdConfigQ2")
     @Profile("dev-gcp")

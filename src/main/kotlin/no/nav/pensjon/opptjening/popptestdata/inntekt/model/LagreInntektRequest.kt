@@ -1,6 +1,5 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt.model
 
-
 data class LagreInntektRequest(
     val fnr: String,
     val fomAar: Int,

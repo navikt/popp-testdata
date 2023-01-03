@@ -15,7 +15,7 @@ class TokenInterceptor(private val poppToken: PoppToken) : ClientHttpRequestInte
     @Autowired
     var controllerRequest: HttpServletRequest? = null
 
-    companion object{
+    companion object {
         const val MILJO = "miljo"
     }
 
@@ -27,5 +27,3 @@ class TokenInterceptor(private val poppToken: PoppToken) : ClientHttpRequestInte
         return execution.execute(request, body)
     }
 }
-
-

@@ -1,8 +1,8 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
 import no.nav.pensjon.opptjening.popptestdata.grunnbelop.Grunnbelop
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.*
+import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
 import org.springframework.stereotype.Service
 
 @Service
@@ -24,12 +24,12 @@ class InntektService(private val poppInntektClient: PoppInntektClient) {
 
     private fun createPoppInntektRequests(request: LagreInntektRequest): List<LagreInntektPoppRequest> {
         return when (request.redusertMedGrunnbelop) {
-            true -> createRequestsWithRedusertMedGrunnbelop(request)
+            true -> createRequestsWithRedusertGrunnbelop(request)
             false -> createRequestsWithConstantBelop(request)
         }
     }
 
-    private fun createRequestsWithRedusertMedGrunnbelop(request: LagreInntektRequest): List<LagreInntektPoppRequest> {
+    private fun createRequestsWithRedusertGrunnbelop(request: LagreInntektRequest): List<LagreInntektPoppRequest> {
         val amountOfGrunnbelop = request.belop / Grunnbelop.getG(request.tomAar)
 
         return (request.fomAar..request.tomAar).map { inntektAr ->
