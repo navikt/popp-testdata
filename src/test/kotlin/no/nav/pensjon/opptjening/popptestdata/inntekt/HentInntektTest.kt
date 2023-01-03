@@ -165,7 +165,7 @@ class HentInntektTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .apply {
-                    environment?.let { header(TokenInterceptor.ENVIRONMENT_HEADER, environment) }
+                    environment?.let { header(TokenInterceptor.MILJO, environment) }
                     navCallId?.let { header(HeaderInterceptor.NAV_CALL_ID, navCallId) }
                     navConsumerId?.let { header(HeaderInterceptor.NAV_CONSUMER_ID, navConsumerId) }
                     fnr?.let { header("fnr", fnr) }

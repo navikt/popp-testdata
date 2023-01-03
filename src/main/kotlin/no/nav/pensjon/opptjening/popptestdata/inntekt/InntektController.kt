@@ -7,7 +7,7 @@ import no.nav.pensjon.opptjening.popptestdata.common.requestRequirement
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektRequest
-import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.ENVIRONMENT_HEADER
+import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.MILJO
 import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -28,7 +28,7 @@ class InntektController(private val inntektService: InntektService) {
     fun lagreInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
-        @RequestHeader(value = ENVIRONMENT_HEADER, required = true) environment: Environment,
+        @RequestHeader(value = MILJO, required = true) environment: Environment,
         @RequestBody request: LagreInntektRequest,
     ): ResponseEntity<*> {
         requestRequirement(request.fomAar <= request.tomAar) { "FomAr is grater than tomAr in request. fomAar was ${request.fomAar} and tomAar was ${request.tomAar}" }
@@ -44,7 +44,7 @@ class InntektController(private val inntektService: InntektService) {
     fun hentInntekter(
         @RequestHeader(value = NAV_CALL_ID, required = true) callId: String,
         @RequestHeader(value = NAV_CONSUMER_ID, required = true) consumerId: String,
-        @RequestHeader(value = ENVIRONMENT_HEADER, required = true) environment: Environment,
+        @RequestHeader(value = MILJO, required = true) environment: Environment,
         @RequestHeader(value = "fnr", required = true) fnr: String
     ): List<Inntekt> {
         return inntektService.hentInntekt(fnr = fnr, fomAr = FIRST_FOM_YEAR, environment)

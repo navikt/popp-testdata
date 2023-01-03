@@ -16,11 +16,11 @@ class TokenInterceptor(private val poppToken: PoppToken) : ClientHttpRequestInte
     var controllerRequest: HttpServletRequest? = null
 
     companion object{
-        const val ENVIRONMENT_HEADER = "environment"
+        const val MILJO = "miljo"
     }
 
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
-        val environment = Environment.valueOf(controllerRequest!!.getHeader(ENVIRONMENT_HEADER).toString())
+        val environment = Environment.valueOf(controllerRequest!!.getHeader(MILJO).toString())
 
         request.headers.setBearerAuth(poppToken.getToken(environment))
 

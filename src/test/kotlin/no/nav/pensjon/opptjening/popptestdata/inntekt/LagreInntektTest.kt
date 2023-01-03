@@ -12,7 +12,7 @@ import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig
 import no.nav.pensjon.opptjening.popptestdata.environment.Environment
 import no.nav.pensjon.opptjening.popptestdata.inntekt.InntektController.Companion.INNTEKT_PATH
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.*
-import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.ENVIRONMENT_HEADER
+import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.MILJO
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
@@ -237,7 +237,7 @@ internal class LagreInntektTest {
                 .content(request)
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .apply {
-                    environment?.let { header(ENVIRONMENT_HEADER, environment) }
+                    environment?.let { header(MILJO, environment) }
                     navCallId?.let { header(NAV_CALL_ID, navCallId) }
                     navConsumerId?.let { header(NAV_CONSUMER_ID, navConsumerId) }
                 }
