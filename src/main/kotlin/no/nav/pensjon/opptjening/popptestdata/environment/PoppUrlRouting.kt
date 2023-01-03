@@ -9,7 +9,7 @@ class PoppUrlRouting(
     @Value("\${popp.url.q2}") private val poppQ2Url: String,
 ) {
     internal fun getUrl(environment: Environment) = when (environment) {
-        Environment.Q1 -> poppQ1Url
-        Environment.Q2 -> poppQ2Url
+        Environment.q1 -> poppQ1Url
+        Environment.q2 -> poppQ2Url
     }
 }

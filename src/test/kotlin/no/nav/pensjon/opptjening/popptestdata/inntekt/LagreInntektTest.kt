@@ -262,8 +262,8 @@ internal class LagreInntektTest {
         private val urlEqualToPoppQ1 = urlEqualTo("/q1/inntekt")
         private val urlEqualToPoppQ2 = urlEqualTo("/q2/inntekt")
 
-        private val Q1 = Environment.Q1.name
-        private val Q2 = Environment.Q2.name
+        private val Q1 = Environment.q1.name
+        private val Q2 = Environment.q2.name
 
         private val wiremock = WireMockServer(WireMockSpring.options().port(9991)).also { it.start() }
 

@@ -14,11 +14,11 @@ internal class PoppUrlRoutingTest {
 
     @Test
     fun `Given Q1 as input When get url Then return Q1 url`() {
-        assertEquals(poppUrlQ1, poppUrlRouting.getUrl(Environment.Q1))
+        assertEquals(poppUrlQ1, poppUrlRouting.getUrl(Environment.q1))
     }
 
     @Test
     fun `Given Q2 as input When get url Then return Q1 url`() {
-        assertEquals(poppUrlQ2, poppUrlRouting.getUrl(Environment.Q2))
+        assertEquals(poppUrlQ2, poppUrlRouting.getUrl(Environment.q2))
     }
 }

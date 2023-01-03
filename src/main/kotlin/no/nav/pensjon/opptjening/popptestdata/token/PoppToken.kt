@@ -11,7 +11,7 @@ class PoppToken(
     @Qualifier("poppTokenProviderQ2") private val poppTokenProviderQ2: TokenProvider,
 ) {
     internal fun getToken(environment: Environment) = when (environment) {
-        Environment.Q1 -> poppTokenProviderQ1.getToken()
-        Environment.Q2 -> poppTokenProviderQ2.getToken()
+        Environment.q1 -> poppTokenProviderQ1.getToken()
+        Environment.q2 -> poppTokenProviderQ2.getToken()
     }
 }

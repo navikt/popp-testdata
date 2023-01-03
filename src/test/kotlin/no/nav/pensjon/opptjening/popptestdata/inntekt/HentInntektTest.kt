@@ -188,8 +188,8 @@ class HentInntektTest {
         private val urlSumPiQ1 = WireMock.urlEqualTo("/q1/inntekt/sumPi")
         private val urlSumPiQ2 = WireMock.urlEqualTo("/q2/inntekt/sumPi")
 
-        private val Q1 = Environment.Q1.name
-        private val Q2 = Environment.Q2.name
+        private val Q1 = Environment.q1.name
+        private val Q2 = Environment.q2.name
 
         private val wiremock = WireMockServer(WireMockSpring.options().port(9991)).also { it.start() }
 
