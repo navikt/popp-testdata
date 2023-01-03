@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.popptestdata.environment
+package no.nav.pensjon.opptjening.popptestdata.miljo
 
 import no.nav.security.token.support.core.api.Unprotected
 import org.springframework.http.ResponseEntity

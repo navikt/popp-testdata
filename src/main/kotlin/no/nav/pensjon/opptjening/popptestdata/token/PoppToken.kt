@@ -1,6 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata.token
 
-import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
+import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import pensjon.opptjening.azure.ad.client.TokenProvider

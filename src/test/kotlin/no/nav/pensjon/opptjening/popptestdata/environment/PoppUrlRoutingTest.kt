@@ -1,5 +1,7 @@
 package no.nav.pensjon.opptjening.popptestdata.environment
 
+import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
+import no.nav.pensjon.opptjening.popptestdata.miljo.PoppUrlRouting
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

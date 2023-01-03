@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
-import no.nav.pensjon.opptjening.popptestdata.environment.PoppUrlRouting
+import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
+import no.nav.pensjon.opptjening.popptestdata.miljo.PoppUrlRouting
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.HentSumPiRequest
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.HentSumPiResponse
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektPoppRequest

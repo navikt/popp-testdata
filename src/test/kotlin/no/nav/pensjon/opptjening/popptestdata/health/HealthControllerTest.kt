@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.popptestdata.health
 
 import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
-import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
+import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test

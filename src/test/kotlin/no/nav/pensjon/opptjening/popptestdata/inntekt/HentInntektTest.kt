@@ -7,7 +7,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig
-import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
+import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
 import no.nav.pensjon.opptjening.popptestdata.inntekt.InntektController.Companion.INNTEKT_PATH
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor

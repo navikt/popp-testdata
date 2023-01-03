@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.popptestdata.token
 
 import jakarta.servlet.http.HttpServletRequest
-import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
+import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution

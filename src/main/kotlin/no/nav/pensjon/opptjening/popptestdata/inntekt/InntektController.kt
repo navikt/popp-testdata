@@ -4,7 +4,7 @@ package no.nav.pensjon.opptjening.popptestdata.inntekt
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CALL_ID
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.common.requestRequirement
-import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
+import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.LagreInntektRequest
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.MILJO
