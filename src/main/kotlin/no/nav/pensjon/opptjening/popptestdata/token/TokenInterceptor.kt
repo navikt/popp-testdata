@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.popptestdata.token
 
 import jakarta.servlet.http.HttpServletRequest
-import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
@@ -20,9 +20,9 @@ class TokenInterceptor(private val poppToken: PoppToken) : ClientHttpRequestInte
     }
 
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
-        val environment = Environment.valueOf(controllerRequest!!.getHeader(MILJO).toString())
+        val miljo = Miljo.valueOf(controllerRequest!!.getHeader(MILJO).toString())
 
-        request.headers.setBearerAuth(poppToken.getToken(environment))
+        request.headers.setBearerAuth(poppToken.getToken(miljo))
 
         return execution.execute(request, body)
     }

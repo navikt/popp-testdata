@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.popptestdata.health
 
 import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
-import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -27,7 +27,7 @@ internal class HealthControllerTest {
             .andReturn()
 
         val body = result.response.contentAsString
-        Environment.values().forEach {
+        Miljo.values().forEach {
             assertTrue(body.contains(it.name), "Response did not contain environment ${it.name}")
         }
     }

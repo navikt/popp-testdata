@@ -9,7 +9,7 @@ import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion.NAV_CONSUMER_ID
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig.Companion.POPP_Q1_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig.Companion.POPP_Q2_TOKEN
-import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
 import no.nav.pensjon.opptjening.popptestdata.inntekt.InntektController.Companion.INNTEKT_PATH
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.*
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.MILJO
@@ -262,8 +262,8 @@ internal class LagreInntektTest {
         private val urlEqualToPoppQ1 = urlEqualTo("/q1/inntekt")
         private val urlEqualToPoppQ2 = urlEqualTo("/q2/inntekt")
 
-        private val Q1 = Environment.q1.name
-        private val Q2 = Environment.q2.name
+        private val Q1 = Miljo.q1.name
+        private val Q2 = Miljo.q2.name
 
         private val wiremock = WireMockServer(WireMockSpring.options().port(9991)).also { it.start() }
 

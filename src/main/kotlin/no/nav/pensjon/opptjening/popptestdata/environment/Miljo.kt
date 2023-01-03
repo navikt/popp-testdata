@@ -1,6 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata.environment
 
-enum class Environment {
+enum class Miljo {
     q1,
     q2,
 }

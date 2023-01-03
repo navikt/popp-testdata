@@ -7,7 +7,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig
-import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
 import no.nav.pensjon.opptjening.popptestdata.inntekt.InntektController.Companion.INNTEKT_PATH
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor
@@ -112,7 +112,7 @@ class HentInntektTest {
     fun `Given env Q2 when calling post inntekt then call lagre inntekt in popp Q2`() {
         wiremock.stubFor(WireMock.post(urlSumPiQ2).willReturn(WireMock.aResponse().withStatus(200)))
 
-        val inntektList = performGetInntekt(environment = Q2)
+        val inntektList = performGetInntekt(miljo = Q2)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .hentInntektResponse()
 
@@ -125,7 +125,8 @@ class HentInntektTest {
 
     @Test
     fun `Given empty environment header when calling post inntekt then return 400 Bad Request`() {
-        performGetInntekt(environment = null).andExpect(MockMvcResultMatchers.status().`is`(400)).andExpect(content().string(""))
+        performGetInntekt(miljo = null).andExpect(MockMvcResultMatchers.status().`is`(400))
+            .andExpect(content().string(""))
     }
 
     @Test
@@ -156,7 +157,7 @@ class HentInntektTest {
     private fun performGetInntekt(
         fnr: String? = "12345678901",
         token: String = createToken(),
-        environment: String? = Q1,
+        miljo: String? = Q1,
         navCallId: String? = "test",
         navConsumerId: String? = "test"
     ) =
@@ -165,10 +166,10 @@ class HentInntektTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .apply {
-                    environment?.let { header(TokenInterceptor.MILJO, environment) }
+                    miljo?.let { header(TokenInterceptor.MILJO, miljo) }
                     navCallId?.let { header(HeaderInterceptor.NAV_CALL_ID, navCallId) }
                     navConsumerId?.let { header(HeaderInterceptor.NAV_CONSUMER_ID, navConsumerId) }
-                    fnr?.let { header("fnr", fnr) }
+                    fnr?.let { param("fnr", fnr) }
                 }
         )
 
@@ -188,8 +189,8 @@ class HentInntektTest {
         private val urlSumPiQ1 = WireMock.urlEqualTo("/q1/inntekt/sumPi")
         private val urlSumPiQ2 = WireMock.urlEqualTo("/q2/inntekt/sumPi")
 
-        private val Q1 = Environment.q1.name
-        private val Q2 = Environment.q2.name
+        private val Q1 = Miljo.q1.name
+        private val Q2 = Miljo.q2.name
 
         private val wiremock = WireMockServer(WireMockSpring.options().port(9991)).also { it.start() }
 

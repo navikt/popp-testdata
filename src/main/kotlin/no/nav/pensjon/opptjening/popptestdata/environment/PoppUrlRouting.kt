@@ -8,8 +8,8 @@ class PoppUrlRouting(
     @Value("\${popp.url.q1}") private val poppQ1Url: String,
     @Value("\${popp.url.q2}") private val poppQ2Url: String,
 ) {
-    internal fun getUrl(environment: Environment) = when (environment) {
-        Environment.q1 -> poppQ1Url
-        Environment.q2 -> poppQ2Url
+    internal fun getUrl(miljo: Miljo) = when (miljo) {
+        Miljo.q1 -> poppQ1Url
+        Miljo.q2 -> poppQ2Url
     }
 }

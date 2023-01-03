@@ -1,6 +1,6 @@
 package no.nav.pensjon.opptjening.popptestdata.inntekt
 
-import no.nav.pensjon.opptjening.popptestdata.environment.Environment
+import no.nav.pensjon.opptjening.popptestdata.environment.Miljo
 import no.nav.pensjon.opptjening.popptestdata.environment.PoppUrlRouting
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.HentSumPiRequest
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.HentSumPiResponse
@@ -15,13 +15,13 @@ class PoppInntektClient(
     private val restTemplate: RestTemplate
 ) {
 
-    internal fun hentSumPi(hentSumPiRequest: HentSumPiRequest, env: Environment): HentSumPiResponse? {
+    internal fun hentSumPi(hentSumPiRequest: HentSumPiRequest, env: Miljo): HentSumPiResponse? {
         val sumPiUrl = "${urlRouting.getUrl(env)}/inntekt/sumPi"
 
         return restTemplate.postForObject(sumPiUrl, hentSumPiRequest, HentSumPiResponse::class.java)
     }
 
-    internal fun lagreInntekt(lagreInntektPoppRequest: LagreInntektPoppRequest, env: Environment) {
+    internal fun lagreInntekt(lagreInntektPoppRequest: LagreInntektPoppRequest, env: Miljo) {
         val lagreInntektUrl = "${urlRouting.getUrl(env)}/inntekt"
 
         restTemplate.postForEntity(lagreInntektUrl, lagreInntektPoppRequest, String::class.java)
