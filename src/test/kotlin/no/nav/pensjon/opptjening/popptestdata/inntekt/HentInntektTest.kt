@@ -8,7 +8,6 @@ import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig
 import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
-import no.nav.pensjon.opptjening.popptestdata.inntekt.InntektController.Companion.INNTEKT_PATH
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.Inntekt
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor
 import no.nav.security.mock.oauth2.MockOAuth2Server
@@ -162,7 +161,7 @@ class HentInntektTest {
         navConsumerId: String? = "test"
     ) =
         mockMvc.perform(
-            MockMvcRequestBuilders.get(INNTEKT_PATH)
+            MockMvcRequestBuilders.get("/api/v1/inntekt")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .apply {

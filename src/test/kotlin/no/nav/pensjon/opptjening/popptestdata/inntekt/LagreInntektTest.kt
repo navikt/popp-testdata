@@ -10,7 +10,6 @@ import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor.Companion
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig.Companion.POPP_Q1_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig.Companion.POPP_Q2_TOKEN
 import no.nav.pensjon.opptjening.popptestdata.miljo.Miljo
-import no.nav.pensjon.opptjening.popptestdata.inntekt.InntektController.Companion.INNTEKT_PATH
 import no.nav.pensjon.opptjening.popptestdata.inntekt.model.*
 import no.nav.pensjon.opptjening.popptestdata.token.TokenInterceptor.Companion.MILJO
 import no.nav.security.mock.oauth2.MockOAuth2Server
@@ -232,7 +231,7 @@ internal class LagreInntektTest {
         navConsumerId : String? = "test"
     ) =
         mockMvc.perform(
-            post(INNTEKT_PATH)
+            post("/api/v1/inntekt")
                 .contentType(APPLICATION_JSON)
                 .content(request)
                 .header(HttpHeaders.AUTHORIZATION, token)
