@@ -22,7 +22,7 @@ internal class HealthControllerTest {
 
     @Test
     fun `when calling get environment then return environment`() {
-        val result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/environment"))
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/miljo"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
