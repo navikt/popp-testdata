@@ -1,7 +1,8 @@
-package no.nav.pensjon.opptjening.popptestdata.health
+package no.nav.pensjon.opptjening.popptestdata.miljo
 
 import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -13,29 +14,22 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 @SpringBootTest(classes = [PoppTestdataApp::class])
 @AutoConfigureMockMvc
 @EnableMockOAuth2Server
-internal class HealthControllerTest {
+internal class MiljoControllerTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
 
     @Test
-    fun `when calling ping endpoint then return 200`() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/ping"))
+    fun `when calling get miljo endpoint then return miljo`() {
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/miljo"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
-    }
 
-    @Test
-    fun `when isAlive ping endpoint then return 200`() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/internal/isalive"))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-    }
+        val body = result.response.contentAsString
 
-    @Test
-    fun `when calling isReady endpoint then return 200`() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/internal/isready"))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
+        Miljo.values().forEach {
+            assertTrue(body.contains(it.name), "Response did not contain environment ${it.name}")
+        }
     }
 }
+
