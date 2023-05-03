@@ -35,7 +35,7 @@ spec:
       value: dev-fss.pensjonopptjening.pensjon-popp-q2
   image: {{ image }}
   ingresses:
-    - https://popp-testdata.dev.intern.nav.no
+    - https://popp-testdata.intern.dev.nav.no
   liveness:
     path: /internal/isalive
     port: 8080
