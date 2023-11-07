@@ -12,8 +12,8 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: https://pensjon-popp.dev-fss-pub.nais.io
-        - host: https://pensjon-popp-q2.dev-fss-pub.nais.io
+        - host: pensjon-popp.dev-fss-pub.nais.io
+        - host: pensjon-popp-q2.dev-fss-pub.nais.io
     inbound:
       rules:
         - application: testnav-popp-testdata-proxy-trygdeetaten
