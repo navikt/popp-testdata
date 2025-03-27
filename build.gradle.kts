@@ -14,8 +14,9 @@ val mockWebserverVersion = "4.9.3"
 plugins {
     id("org.springframework.boot") version "3.0.0"
     id("io.spring.dependency-management") version "1.1.6"
-    kotlin("jvm") version "1.9.10"
-    kotlin("plugin.spring") version "1.9.10"
+    kotlin("jvm") version "2.1.20"
+    kotlin("plugin.spring") version "2.1.20"
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 group = "no.nav.pensjon.opptjening"
