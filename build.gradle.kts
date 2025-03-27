@@ -2,28 +2,31 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val springVersion = "3.0.0"
-val jacksonVersion = "2.14.1"
-val prometheusVersion = "1.10.2"
+val springVersion = "3.4.4"
+val springStubRunnerVersion = "4.2.1"
+val jacksonVersion = "2.18.3"
+val prometheusVersion = "1.14.5"
 val logbackEncoderVersion = "7.2"
-val navTokenSupportVersion = "3.0.0"
+val navTokenSupportVersion = "5.0.21"
 val hibernateValidatorVersion = "7.0.4.Final"
 val azureAdClientVersion = "0.0.7"
 val mockWebserverVersion = "4.9.3"
 
 plugins {
-    id("org.springframework.boot") version "3.0.0"
-    id("io.spring.dependency-management") version "1.1.6"
-    kotlin("jvm") version "2.1.20"
-    kotlin("plugin.spring") version "2.1.20"
+    val kotlinVersion = "2.1.20"
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.spring") version kotlinVersion
+    id("org.springframework.boot") version "3.4.3"
     id("com.github.ben-manes.versions") version "0.52.0"
 }
+
+apply(plugin = "io.spring.dependency-management")
 
 group = "no.nav.pensjon.opptjening"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
@@ -55,12 +58,9 @@ dependencies {
     implementation("org.hibernate:hibernate-validator:$hibernateValidatorVersion")
     implementation("no.nav.pensjonopptjening:pensjon-opptjening-azure-ad-client:$azureAdClientVersion")
 
-    //Documentation
-    //implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
-
     // Test - setup
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner:3.0.0")
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner:$springStubRunnerVersion")
 
     // Test - token-validation-spring-test dependencies
     testImplementation("no.nav.security:token-validation-spring-test:$navTokenSupportVersion")
@@ -69,7 +69,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
     compilerOptions {
         freeCompilerArgs.add("-Xjsr305=strict")
-        jvmTarget.set(JvmTarget.JVM_17)
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension
 import no.nav.pensjon.opptjening.popptestdata.PoppTestdataApp
 import no.nav.pensjon.opptjening.popptestdata.common.HeaderInterceptor
 import no.nav.pensjon.opptjening.popptestdata.config.MockPoppTokenProviderConfig
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.RegisterExtension
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -39,10 +42,12 @@ class HentInntektTest {
     @Autowired
     private lateinit var server: MockOAuth2Server
 
+    /*
     @BeforeEach
     fun resetWiremock() {
         wiremock.resetAll()
     }
+     */
 
     @Test
     fun `Given sumPi returns 200 with no body when calling get inntekt then return 200 ok with empty list`() {
@@ -189,13 +194,16 @@ class HentInntektTest {
         private val Q1 = Miljo.q1.name
         private val Q2 = Miljo.q2.name
 
-        private val wiremock = WireMockServer(WireMockSpring.options().port(9991)).also { it.start() }
+        @JvmField
+        @RegisterExtension
+        val wiremock = WireMockExtension.newInstance()
+            .options(WireMockConfiguration.wireMockConfig().port(9991))
+            .build()!!
 
-        @JvmStatic
-        @AfterAll
-        fun clean() {
-            wiremock.stop()
-            wiremock.shutdown()
+        init {
+            println("WIREMOCK: ${wiremock.port} ${wiremock.baseUrl()}")
         }
+
+
     }
 }
