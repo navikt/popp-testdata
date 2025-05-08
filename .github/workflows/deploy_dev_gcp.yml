@@ -17,24 +17,25 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 'Java 17'
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 17
-          java-package: jdk
           cache: 'gradle'
 
       - name: 'Bygg applikasjon'
         run: |
           ./gradlew build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Build and push docker image'
         uses: nais/docker-build-push@v0
         id: docker-push
         with:
-          team: 'pensjonopptjening'
+          team: pensjonopptjening
           tag: '${{ github.sha }}'
-x
+
       - name: 'Deploy popp-testdata to dev-gcp'
         uses: nais/deploy/actions/deploy@v2
         env:
